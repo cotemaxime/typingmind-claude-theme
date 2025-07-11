@@ -3,18 +3,21 @@
 
   const CONFIG = {
     colors: {
-      primary: '#FF6B35',
-      background: '#1F1F1F',
-      sidebar: '#2F2F2F',
-      surface: '#343434',
-      text: '#FFFFFF',
-      textSecondary: '#B0B0B0',
-      border: '#404040',
-      hover: '#3A3A3A',
-      userMessage: '#2F2F2F',
-      assistantMessage: '#1F1F1F',
-      codeBackground: '#0D1117',
-      codeBorder: '#30363D'
+      primary: '#D97706',
+      secondary: '#F59E0B',
+      background: '#FAFAFA',
+      sidebar: '#FFFFFF',
+      surface: '#FFFFFF',
+      text: '#111827',
+      textSecondary: '#6B7280',
+      border: '#E5E7EB',
+      hover: '#F3F4F6',
+      userMessage: '#F0F9FF',
+      assistantMessage: '#FFFFFF',
+      codeBackground: '#F9FAFB',
+      codeBorder: '#E5E7EB',
+      orange: '#D97706',
+      lightOrange: '#FED7AA'
     },
     fonts: {
       primary: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
@@ -28,18 +31,17 @@
   };
 
   const SELECTORS = {
-    sidebar: '[data-element-id="sidebar"]',
-    newChatButton: '[data-element-id="new-chat-button"]',
-    chatHistory: '[data-element-id="chat-history"]',
-    chatItem: '[data-element-id="chat-item"]',
-    messageContainer: '[data-element-id="message-container"]',
-    userMessage: '[data-element-id="user-message"]',
-    assistantMessage: '[data-element-id="assistant-message"]',
-    codeBlock: '[data-element-id="code-block"]',
-    inputArea: '[data-element-id="input-area"]',
-    sendButton: '[data-element-id="send-button"]',
-    mainContent: '[data-element-id="main-content"]',
-    messageText: '[data-element-id="message-text"]'
+    body: 'body',
+    sidebar: '[data-element-id="nav-container"]',
+    mainContent: '[data-element-id="main-content-area"]',
+    newChatButton: 'button[class*="bg-orange"], button[class*="bg-amber"]',
+    chatItem: 'div[class*="cursor-pointer"][class*="hover:"]',
+    messageContainer: 'div[class*="message"], div[class*="chat-message"]',
+    userMessage: 'div[class*="user"], div[class*="human"]',
+    assistantMessage: 'div[class*="assistant"], div[class*="ai"]',
+    codeBlock: 'pre, code',
+    inputArea: 'textarea, input[type="text"]',
+    sendButton: 'button[class*="send"], button[type="submit"]'
   };
 
   function injectCSS(css) {
@@ -56,41 +58,40 @@
         color: ${CONFIG.colors.text} !important;
       }
 
-      ${SELECTORS.newChatButton} {
-        background-color: ${CONFIG.colors.primary} !important;
+      /* New Chat Button - Orange accent */
+      button[class*="bg-orange"], button[class*="bg-amber"], button[class*="new-chat"] {
+        background-color: ${CONFIG.colors.orange} !important;
         color: white !important;
         border: none !important;
         border-radius: ${CONFIG.spacing.borderRadius} !important;
-        padding: ${CONFIG.spacing.padding} !important;
+        padding: 8px 16px !important;
         font-weight: 500 !important;
         transition: all 0.2s ease !important;
       }
 
-      ${SELECTORS.newChatButton}:hover {
-        background-color: #E85A2B !important;
+      button[class*="bg-orange"]:hover, button[class*="bg-amber"]:hover, button[class*="new-chat"]:hover {
+        background-color: #B45309 !important;
         transform: translateY(-1px) !important;
       }
 
-      ${SELECTORS.chatHistory} {
-        background-color: transparent !important;
-      }
-
-      ${SELECTORS.chatItem} {
+      /* Chat history items */
+      nav div[class*="cursor-pointer"], div[class*="chat-item"] {
         background-color: transparent !important;
         color: ${CONFIG.colors.textSecondary} !important;
         border-radius: ${CONFIG.spacing.borderRadius} !important;
-        margin: 4px 0 !important;
+        margin: 2px 0 !important;
         padding: 8px 12px !important;
         transition: all 0.2s ease !important;
       }
 
-      ${SELECTORS.chatItem}:hover {
+      nav div[class*="cursor-pointer"]:hover, div[class*="chat-item"]:hover {
         background-color: ${CONFIG.colors.hover} !important;
         color: ${CONFIG.colors.text} !important;
       }
 
-      ${SELECTORS.chatItem}[data-selected="true"] {
-        background-color: ${CONFIG.colors.surface} !important;
+      /* Active chat item */
+      nav div[class*="cursor-pointer"][class*="bg-"], div[class*="chat-item"][class*="bg-"] {
+        background-color: ${CONFIG.colors.lightOrange} !important;
         color: ${CONFIG.colors.text} !important;
       }
     `;
@@ -105,34 +106,34 @@
         font-family: ${CONFIG.fonts.primary} !important;
       }
 
-      ${SELECTORS.messageContainer} {
+      /* Message containers */
+      div[class*="message"], div[class*="chat-message"] {
         background-color: transparent !important;
         border: none !important;
         margin: ${CONFIG.spacing.margin} 0 !important;
         padding: ${CONFIG.spacing.padding} !important;
       }
 
-      ${SELECTORS.userMessage} {
+      /* User messages - light blue background */
+      div[class*="user"], div[class*="human"], div[data-message-author="user"] {
         background-color: ${CONFIG.colors.userMessage} !important;
         color: ${CONFIG.colors.text} !important;
         border-radius: ${CONFIG.spacing.borderRadius} !important;
         padding: ${CONFIG.spacing.padding} !important;
-        margin-left: auto !important;
-        max-width: 80% !important;
         border: 1px solid ${CONFIG.colors.border} !important;
       }
 
-      ${SELECTORS.assistantMessage} {
+      /* Assistant messages - white background */
+      div[class*="assistant"], div[class*="ai"], div[data-message-author="assistant"] {
         background-color: ${CONFIG.colors.assistantMessage} !important;
         color: ${CONFIG.colors.text} !important;
         border-radius: ${CONFIG.spacing.borderRadius} !important;
         padding: ${CONFIG.spacing.padding} !important;
-        margin-right: auto !important;
-        max-width: 80% !important;
         border: 1px solid ${CONFIG.colors.border} !important;
       }
 
-      ${SELECTORS.messageText} {
+      /* Message text */
+      div[class*="message"] p, div[class*="chat-message"] p {
         color: ${CONFIG.colors.text} !important;
         line-height: 1.6 !important;
       }
@@ -142,35 +143,37 @@
 
   function applyCodeBlockStyles() {
     const codeBlockCSS = `
-      ${SELECTORS.codeBlock} {
-        background-color: ${CONFIG.colors.codeBackground} !important;
-        border: 1px solid ${CONFIG.colors.codeBorder} !important;
-        border-radius: ${CONFIG.spacing.borderRadius} !important;
-        padding: ${CONFIG.spacing.padding} !important;
-        font-family: ${CONFIG.fonts.mono} !important;
-        overflow-x: auto !important;
-      }
-
-      ${SELECTORS.codeBlock} code {
-        background-color: transparent !important;
-        color: #E6EDF3 !important;
-        font-family: ${CONFIG.fonts.mono} !important;
-      }
-
+      /* Code blocks */
       pre {
         background-color: ${CONFIG.colors.codeBackground} !important;
         border: 1px solid ${CONFIG.colors.codeBorder} !important;
         border-radius: ${CONFIG.spacing.borderRadius} !important;
         padding: ${CONFIG.spacing.padding} !important;
         overflow-x: auto !important;
+        font-family: ${CONFIG.fonts.mono} !important;
       }
 
+      pre code {
+        background-color: transparent !important;
+        color: ${CONFIG.colors.text} !important;
+        font-family: ${CONFIG.fonts.mono} !important;
+        padding: 0 !important;
+      }
+
+      /* Inline code */
       code {
-        background-color: ${CONFIG.colors.surface} !important;
+        background-color: ${CONFIG.colors.codeBackground} !important;
         color: ${CONFIG.colors.text} !important;
         padding: 2px 4px !important;
         border-radius: 4px !important;
         font-family: ${CONFIG.fonts.mono} !important;
+        border: 1px solid ${CONFIG.colors.codeBorder} !important;
+      }
+
+      /* Syntax highlighting for light theme */
+      .hljs {
+        background-color: ${CONFIG.colors.codeBackground} !important;
+        color: ${CONFIG.colors.text} !important;
       }
     `;
     injectCSS(codeBlockCSS);
@@ -178,7 +181,8 @@
 
   function applyInputAreaStyles() {
     const inputAreaCSS = `
-      ${SELECTORS.inputArea} {
+      /* Input areas */
+      textarea, input[type="text"] {
         background-color: ${CONFIG.colors.surface} !important;
         border: 1px solid ${CONFIG.colors.border} !important;
         border-radius: ${CONFIG.spacing.borderRadius} !important;
@@ -187,26 +191,28 @@
         font-family: ${CONFIG.fonts.primary} !important;
       }
 
-      ${SELECTORS.inputArea}:focus {
-        border-color: ${CONFIG.colors.primary} !important;
+      textarea:focus, input[type="text"]:focus {
+        border-color: ${CONFIG.colors.orange} !important;
         outline: none !important;
-        box-shadow: 0 0 0 2px ${CONFIG.colors.primary}20 !important;
+        box-shadow: 0 0 0 2px ${CONFIG.colors.orange}20 !important;
       }
 
-      ${SELECTORS.sendButton} {
-        background-color: ${CONFIG.colors.primary} !important;
+      /* Send button */
+      button[class*="send"], button[type="submit"] {
+        background-color: ${CONFIG.colors.orange} !important;
         color: white !important;
         border: none !important;
         border-radius: ${CONFIG.spacing.borderRadius} !important;
-        padding: ${CONFIG.spacing.padding} !important;
+        padding: 8px 16px !important;
         transition: all 0.2s ease !important;
+        font-weight: 500 !important;
       }
 
-      ${SELECTORS.sendButton}:hover {
-        background-color: #E85A2B !important;
+      button[class*="send"]:hover, button[type="submit"]:hover {
+        background-color: #B45309 !important;
       }
 
-      ${SELECTORS.sendButton}:disabled {
+      button[class*="send"]:disabled, button[type="submit"]:disabled {
         background-color: ${CONFIG.colors.textSecondary} !important;
         cursor: not-allowed !important;
       }
@@ -216,12 +222,20 @@
 
   function applyGlobalStyles() {
     const globalCSS = `
+      /* Force light mode */
       body {
         background-color: ${CONFIG.colors.background} !important;
         color: ${CONFIG.colors.text} !important;
         font-family: ${CONFIG.fonts.primary} !important;
       }
 
+      /* Override dark mode classes */
+      .dark {
+        background-color: ${CONFIG.colors.background} !important;
+        color: ${CONFIG.colors.text} !important;
+      }
+
+      /* Scrollbar styling */
       * {
         scrollbar-width: thin !important;
         scrollbar-color: ${CONFIG.colors.border} transparent !important;
@@ -242,21 +256,24 @@
       }
 
       *::-webkit-scrollbar-thumb:hover {
-        background-color: ${CONFIG.colors.hover} !important;
+        background-color: ${CONFIG.colors.textSecondary} !important;
       }
 
+      /* Typography */
       h1, h2, h3, h4, h5, h6 {
         color: ${CONFIG.colors.text} !important;
       }
 
+      /* Links */
       a {
-        color: ${CONFIG.colors.primary} !important;
+        color: ${CONFIG.colors.orange} !important;
       }
 
       a:hover {
-        color: #E85A2B !important;
+        color: #B45309 !important;
       }
 
+      /* Form elements */
       button {
         font-family: ${CONFIG.fonts.primary} !important;
       }
@@ -265,43 +282,32 @@
         font-family: ${CONFIG.fonts.primary} !important;
       }
 
+      /* Highlight */
       .highlight {
-        background-color: ${CONFIG.colors.primary}20 !important;
+        background-color: ${CONFIG.colors.lightOrange} !important;
         padding: 2px 4px !important;
         border-radius: 4px !important;
+      }
+
+      /* Override any dark mode variables */
+      :root {
+        --main-dark-color: ${CONFIG.colors.background} !important;
       }
     `;
     injectCSS(globalCSS);
   }
 
   function styleElements() {
-    const allElements = document.querySelectorAll('*');
-    allElements.forEach(element => {
-      if (element.dataset.elementId) {
-        switch (element.dataset.elementId) {
-          case 'sidebar':
-          case 'new-chat-button':
-          case 'chat-history':
-          case 'chat-item':
-            applySidebarStyles();
-            break;
-          case 'main-content':
-          case 'message-container':
-          case 'user-message':
-          case 'assistant-message':
-          case 'message-text':
-            applyMainContentStyles();
-            break;
-          case 'code-block':
-            applyCodeBlockStyles();
-            break;
-          case 'input-area':
-          case 'send-button':
-            applyInputAreaStyles();
-            break;
-        }
-      }
-    });
+    // Force light mode by removing dark class
+    document.documentElement.classList.remove('dark');
+    document.body.classList.remove('dark');
+    
+    // Apply all styles
+    applyGlobalStyles();
+    applySidebarStyles();
+    applyMainContentStyles();
+    applyCodeBlockStyles();
+    applyInputAreaStyles();
   }
 
   function observeChanges() {
@@ -324,18 +330,18 @@
   }
 
   function initTheme() {
-    console.log('Initializing Claude Theme...');
-    
-    applyGlobalStyles();
-    applySidebarStyles();
-    applyMainContentStyles();
-    applyCodeBlockStyles();
-    applyInputAreaStyles();
+    console.log('Initializing Claude Light Theme...');
     
     styleElements();
     observeChanges();
     
-    console.log('Claude Theme initialized successfully!');
+    // Force light mode periodically
+    setInterval(() => {
+      document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark');
+    }, 1000);
+    
+    console.log('Claude Light Theme initialized successfully!');
   }
 
   if (document.readyState === 'loading') {
