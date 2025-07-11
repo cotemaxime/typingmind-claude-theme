@@ -52,14 +52,18 @@
 
   function applySidebarStyles() {
     const sidebarCSS = `
-      ${SELECTORS.sidebar} {
+      /* Sidebar container - target exact classes from inspector */
+      [data-element-id="nav-container"],
+      nav[data-element-id="side-bar-background"],
+      .jsx-7078ffb922cb3c38 {
         background-color: ${CONFIG.colors.sidebar} !important;
         border-right: 1px solid ${CONFIG.colors.border} !important;
         color: ${CONFIG.colors.text} !important;
       }
 
-      /* New Chat Button - Orange accent */
-      button[class*="bg-orange"], button[class*="bg-amber"], button[class*="new-chat"] {
+      /* New Chat Button - exact selector from inspector */
+      button[data-element-id="new-chat-button-in-side-bar"],
+      button[class*="bg-blue-600"] {
         background-color: ${CONFIG.colors.orange} !important;
         color: white !important;
         border: none !important;
@@ -69,13 +73,21 @@
         transition: all 0.2s ease !important;
       }
 
-      button[class*="bg-orange"]:hover, button[class*="bg-amber"]:hover, button[class*="new-chat"]:hover {
+      button[data-element-id="new-chat-button-in-side-bar"]:hover,
+      button[class*="bg-blue-600"]:hover {
         background-color: #B45309 !important;
         transform: translateY(-1px) !important;
       }
 
+      /* Sidebar beginning part */
+      div[data-element-id="sidebar-beginning-part"] {
+        background-color: ${CONFIG.colors.sidebar} !important;
+      }
+
       /* Chat history items */
-      nav div[class*="cursor-pointer"], div[class*="chat-item"] {
+      nav div[class*="cursor-pointer"],
+      div[class*="jsx-"] div[class*="cursor-pointer"],
+      div[role="button"] {
         background-color: transparent !important;
         color: ${CONFIG.colors.textSecondary} !important;
         border-radius: ${CONFIG.spacing.borderRadius} !important;
@@ -84,13 +96,16 @@
         transition: all 0.2s ease !important;
       }
 
-      nav div[class*="cursor-pointer"]:hover, div[class*="chat-item"]:hover {
+      nav div[class*="cursor-pointer"]:hover,
+      div[class*="jsx-"] div[class*="cursor-pointer"]:hover,
+      div[role="button"]:hover {
         background-color: ${CONFIG.colors.hover} !important;
         color: ${CONFIG.colors.text} !important;
       }
 
-      /* Active chat item */
-      nav div[class*="cursor-pointer"][class*="bg-"], div[class*="chat-item"][class*="bg-"] {
+      /* Active/selected chat item */
+      nav div[class*="cursor-pointer"][class*="bg-"],
+      div[class*="jsx-"] div[class*="bg-"] {
         background-color: ${CONFIG.colors.lightOrange} !important;
         color: ${CONFIG.colors.text} !important;
       }
@@ -100,14 +115,21 @@
 
   function applyMainContentStyles() {
     const mainContentCSS = `
-      ${SELECTORS.mainContent} {
+      /* Main content area - target the actual main content */
+      [data-element-id="main-content-area"],
+      div[class*="jsx-"][class*="flex-1"],
+      div[class*="jsx-"][class*="pl-"],
+      main,
+      div[class*="jsx-"][class*="overflow-y-auto"] {
         background-color: ${CONFIG.colors.background} !important;
         color: ${CONFIG.colors.text} !important;
         font-family: ${CONFIG.fonts.primary} !important;
       }
 
       /* Message containers */
-      div[class*="message"], div[class*="chat-message"] {
+      div[class*="jsx-"] div[class*="message"],
+      div[class*="jsx-"] div[class*="chat"],
+      div[class*="jsx-"] div[class*="flex"][class*="gap-"] {
         background-color: transparent !important;
         border: none !important;
         margin: ${CONFIG.spacing.margin} 0 !important;
@@ -115,7 +137,10 @@
       }
 
       /* User messages - light blue background */
-      div[class*="user"], div[class*="human"], div[data-message-author="user"] {
+      div[class*="jsx-"] div[class*="user"],
+      div[class*="jsx-"] div[class*="human"],
+      div[data-message-author="user"],
+      div[class*="jsx-"] div:has([data-message-author="user"]) {
         background-color: ${CONFIG.colors.userMessage} !important;
         color: ${CONFIG.colors.text} !important;
         border-radius: ${CONFIG.spacing.borderRadius} !important;
@@ -124,7 +149,10 @@
       }
 
       /* Assistant messages - white background */
-      div[class*="assistant"], div[class*="ai"], div[data-message-author="assistant"] {
+      div[class*="jsx-"] div[class*="assistant"],
+      div[class*="jsx-"] div[class*="ai"],
+      div[data-message-author="assistant"],
+      div[class*="jsx-"] div:has([data-message-author="assistant"]) {
         background-color: ${CONFIG.colors.assistantMessage} !important;
         color: ${CONFIG.colors.text} !important;
         border-radius: ${CONFIG.spacing.borderRadius} !important;
@@ -133,7 +161,9 @@
       }
 
       /* Message text */
-      div[class*="message"] p, div[class*="chat-message"] p {
+      div[class*="jsx-"] p,
+      div[class*="jsx-"] span,
+      div[class*="jsx-"] div[class*="text-"] {
         color: ${CONFIG.colors.text} !important;
         line-height: 1.6 !important;
       }
@@ -222,7 +252,18 @@
 
   function applyGlobalStyles() {
     const globalCSS = `
-      /* Force light mode */
+      /* CRITICAL: Override CSS variables that control dark mode */
+      :root {
+        --main-dark-color: ${CONFIG.colors.background} !important;
+        --sidebar-color: ${CONFIG.colors.sidebar} !important;
+        --sidebar-menu-color: ${CONFIG.colors.sidebar} !important;
+        --workspace-color: ${CONFIG.colors.sidebar} !important;
+        --popup-color: ${CONFIG.colors.sidebar} !important;
+        --text-color: ${CONFIG.colors.text} !important;
+        --border-color: ${CONFIG.colors.border} !important;
+      }
+
+      /* Force light mode on body */
       body {
         background-color: ${CONFIG.colors.background} !important;
         color: ${CONFIG.colors.text} !important;
@@ -233,6 +274,34 @@
       .dark {
         background-color: ${CONFIG.colors.background} !important;
         color: ${CONFIG.colors.text} !important;
+      }
+
+      /* Target the specific jsx class from inspector */
+      .jsx-7078ffb922cb3c38 {
+        background-color: ${CONFIG.colors.sidebar} !important;
+      }
+
+      /* Force background on elements using CSS variables */
+      div[class*="bg-[color:--sidebar-color]"],
+      div[class*="bg-[--workspace-color]"],
+      nav[class*="bg-[color:--sidebar-color]"] {
+        background-color: ${CONFIG.colors.sidebar} !important;
+      }
+
+      /* Chat space background */
+      div[class*="dark:bg-[--main-dark-color]"],
+      div[data-element-id="chat-space-background"] {
+        background-color: ${CONFIG.colors.background} !important;
+      }
+
+      /* Main content area */
+      div[data-element-id="main-content-area"] {
+        background-color: ${CONFIG.colors.background} !important;
+      }
+
+      /* Sidebar specific */
+      nav[data-element-id="side-bar-background"] {
+        background-color: ${CONFIG.colors.sidebar} !important;
       }
 
       /* Scrollbar styling */
@@ -288,11 +357,6 @@
         padding: 2px 4px !important;
         border-radius: 4px !important;
       }
-
-      /* Override any dark mode variables */
-      :root {
-        --main-dark-color: ${CONFIG.colors.background} !important;
-      }
     `;
     injectCSS(globalCSS);
   }
@@ -301,6 +365,14 @@
     // Force light mode by removing dark class
     document.documentElement.classList.remove('dark');
     document.body.classList.remove('dark');
+    
+    // Also remove dark class from any jsx elements
+    const allElements = document.querySelectorAll('*');
+    allElements.forEach(element => {
+      if (element.classList.contains('dark')) {
+        element.classList.remove('dark');
+      }
+    });
     
     // Apply all styles
     applyGlobalStyles();
@@ -332,14 +404,55 @@
   function initTheme() {
     console.log('Initializing Claude Light Theme...');
     
+    // Override CSS variables immediately
+    const root = document.documentElement;
+    root.style.setProperty('--main-dark-color', CONFIG.colors.background);
+    root.style.setProperty('--sidebar-color', CONFIG.colors.sidebar);
+    root.style.setProperty('--sidebar-menu-color', CONFIG.colors.sidebar);
+    root.style.setProperty('--workspace-color', CONFIG.colors.sidebar);
+    root.style.setProperty('--popup-color', CONFIG.colors.sidebar);
+    
     styleElements();
     observeChanges();
     
-    // Force light mode periodically
+    // Force light mode periodically and aggressively
     setInterval(() => {
       document.documentElement.classList.remove('dark');
       document.body.classList.remove('dark');
-    }, 1000);
+      
+      // Force CSS variables again
+      root.style.setProperty('--main-dark-color', CONFIG.colors.background);
+      root.style.setProperty('--sidebar-color', CONFIG.colors.sidebar);
+      root.style.setProperty('--sidebar-menu-color', CONFIG.colors.sidebar);
+      root.style.setProperty('--workspace-color', CONFIG.colors.sidebar);
+      
+      // Force background colors on key elements
+      const sidebar = document.querySelector('[data-element-id="nav-container"]');
+      if (sidebar) {
+        sidebar.style.backgroundColor = CONFIG.colors.sidebar;
+      }
+      
+      const sidebarBg = document.querySelector('[data-element-id="side-bar-background"]');
+      if (sidebarBg) {
+        sidebarBg.style.backgroundColor = CONFIG.colors.sidebar;
+      }
+      
+      const mainContent = document.querySelector('[data-element-id="main-content-area"]');
+      if (mainContent) {
+        mainContent.style.backgroundColor = CONFIG.colors.background;
+      }
+      
+      const chatSpace = document.querySelector('[data-element-id="chat-space-background"]');
+      if (chatSpace) {
+        chatSpace.style.backgroundColor = CONFIG.colors.background;
+      }
+      
+      // Force jsx elements
+      const jsxElements = document.querySelectorAll('.jsx-7078ffb922cb3c38');
+      jsxElements.forEach(element => {
+        element.style.backgroundColor = CONFIG.colors.sidebar;
+      });
+    }, 500);
     
     console.log('Claude Light Theme initialized successfully!');
   }
