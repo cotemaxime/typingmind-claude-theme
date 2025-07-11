@@ -1,6 +1,6 @@
 /**
  * Claude AI Theme for TypingMind
- * A clean, minimalist theme inspired by Claude AI's interface
+ * A clean, minimalist theme inpired by Claude AI's interface
  * Light mode optimized with potential for dark mode expansion
  */
 
@@ -11,25 +11,38 @@
     const CONFIG = {
         colors: {
             // Main colors
-            primary: '#ff6b35',        // Claude's signature orange
-            primaryHover: '#e55a2b',   // Darker orange for hover
-            primaryLight: '#ff6b3520', // Light orange for backgrounds
-            primaryMedium: '#ff6b3530', // Medium orange for buttons - 10% less subtle
+            primary: '#d97449',        // Claude's muted signature orange
+            primaryHover: '#c4653f',   // Darker muted orange for hover
+            primaryLight: '#d9744920', // Light muted orange for backgrounds
+            primaryMedium: '#d9744930', // Medium muted orange for buttons
             
-            // Backgrounds
+            // Light mode backgrounds
             mainBg: '#fdfcfb',         // Claude's warm off-white main background
             sidebarBg: '#f7f5f3',      // Claude's warm beige sidebar
             workspaceBg: '#f0ede8',    // Slightly darker beige for workspace
             cardBg: '#ffffff',         // Pure white for cards/containers
             
-            // Text colors
+            // Light mode text colors
             textPrimary: '#1a1a1a',    // Dark text
             textSecondary: '#6b7280',  // Gray text
             textMuted: '#9ca3af',      // Muted text
             
+            // Dark mode backgrounds
+            darkMainBg: '#2f2f2f',     // Claude's dark main background (lighter)
+            darkSidebarBg: '#171717',  // Claude's dark sidebar (much darker)
+            darkWorkspaceBg: '#1a1a1a', // Dark workspace background
+            darkCardBg: '#262626',     // Dark card background
+            
+            // Dark mode text colors
+            darkTextPrimary: '#e8e8e8',   // Light text for dark mode
+            darkTextSecondary: '#a3a3a3', // Gray text for dark mode
+            darkTextMuted: '#737373',     // Muted text for dark mode
+            
             // Borders and dividers
             border: '#e5e7eb',         // Light gray border
             borderHover: '#d1d5db',    // Slightly darker border
+            darkBorder: '#404040',     // Dark mode border
+            darkBorderHover: '#525252', // Dark mode border hover
             
             // Status colors
             success: '#10b981',
@@ -186,7 +199,7 @@
                 --claude-primary: ${CONFIG.colors.primary};
                 --claude-primary-hover: ${CONFIG.colors.primaryHover};
                 --claude-primary-light: ${CONFIG.colors.primaryLight};
-            --claude-primary-medium: ${CONFIG.colors.primaryMedium};
+                --claude-primary-medium: ${CONFIG.colors.primaryMedium};
                 --claude-main-bg: ${CONFIG.colors.mainBg};
                 --claude-sidebar-bg: ${CONFIG.colors.sidebarBg};
                 --claude-workspace-bg: ${CONFIG.colors.workspaceBg};
@@ -205,8 +218,21 @@
                 --claude-radius-xl: ${CONFIG.borderRadius.xl};
                 --claude-font-family: ${CONFIG.typography.fontFamily};
             }
+            
+            /* Dark Mode Variables */
+            .dark {
+                --claude-main-bg: ${CONFIG.colors.darkMainBg};
+                --claude-sidebar-bg: ${CONFIG.colors.darkSidebarBg};
+                --claude-workspace-bg: ${CONFIG.colors.darkWorkspaceBg};
+                --claude-card-bg: ${CONFIG.colors.darkCardBg};
+                --claude-text-primary: ${CONFIG.colors.darkTextPrimary};
+                --claude-text-secondary: ${CONFIG.colors.darkTextSecondary};
+                --claude-text-muted: ${CONFIG.colors.darkTextMuted};
+                --claude-border: ${CONFIG.colors.darkBorder};
+                --claude-border-hover: ${CONFIG.colors.darkBorderHover};
+            }
 
-            /* Override dark mode for light theme */
+            /* Dark Mode Support - Override TypingMind's dark mode variables */
             body.dark {
                 --main-dark-color: var(--claude-main-bg) !important;
                 --sidebar-color: var(--claude-sidebar-bg) !important;
@@ -810,6 +836,147 @@
             .dark .bg-white {
                 background-color: var(--claude-card-bg) !important;
             }
+            
+            /* Additional Dark Mode Styling */
+            .dark .text-gray-900 {
+                color: var(--claude-text-primary) !important;
+            }
+            
+            .dark .text-gray-600 {
+                color: var(--claude-text-secondary) !important;
+            }
+            
+            .dark .text-gray-400 {
+                color: var(--claude-text-muted) !important;
+            }
+            
+            .dark .text-slate-900 {
+                color: var(--claude-text-primary) !important;
+            }
+            
+            .dark .text-slate-600 {
+                color: var(--claude-text-secondary) !important;
+            }
+            
+            .dark .text-slate-400 {
+                color: var(--claude-text-muted) !important;
+            }
+            
+            /* Dark mode borders */
+            .dark .border-gray-200,
+            .dark .border-gray-300 {
+                border-color: var(--claude-border) !important;
+            }
+            
+            .dark .border-slate-200,
+            .dark .border-slate-300 {
+                border-color: var(--claude-border) !important;
+            }
+            
+            /* Dark mode user messages */
+            .dark [data-element-id="user-message"] {
+                background-color: var(--claude-workspace-bg) !important;
+                color: var(--claude-text-primary) !important;
+            }
+            
+            /* Dark mode workspace tabs */
+            .dark [data-element-id*="workspace-tab"] span.bg-white\\/20,
+            .dark [data-element-id*="workspace-tab"] span[class*="bg-white/20"],
+            .dark [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span.bg-white\\/20,
+            .dark [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span[class*="bg-white/20"] {
+                background-color: var(--claude-workspace-bg) !important;
+                color: var(--claude-primary) !important;
+            }
+            
+            /* Dark mode buttons with dark:bg-white class */
+            .dark button[class*="dark:bg-white"] {
+                background-color: var(--claude-card-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border: 1px solid var(--claude-border) !important;
+            }
+            
+            .dark button[class*="dark:bg-white"]:hover {
+                background-color: var(--claude-workspace-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border-color: var(--claude-border-hover) !important;
+            }
+            
+            /* Dark mode buttons with specific dark classes */
+            .dark button.dark\\:bg-white {
+                background-color: var(--claude-card-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border: 1px solid var(--claude-border) !important;
+            }
+            
+            .dark button.dark\\:bg-white:hover {
+                background-color: var(--claude-workspace-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border-color: var(--claude-border-hover) !important;
+            }
+            
+            /* Generic dark mode button fix */
+            .dark button[class*="dark:text-slate-800"] {
+                color: var(--claude-text-primary) !important;
+            }
+            
+            /* Dark mode gray buttons fix */
+            .dark button[class*="dark:bg-gray-700"] {
+                background-color: var(--claude-card-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border: 1px solid var(--claude-border) !important;
+            }
+            
+            .dark button[class*="dark:bg-gray-700"]:hover {
+                background-color: var(--claude-workspace-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border-color: var(--claude-border-hover) !important;
+            }
+            
+            .dark button.dark\\:bg-gray-700 {
+                background-color: var(--claude-card-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border: 1px solid var(--claude-border) !important;
+            }
+            
+            .dark button.dark\\:bg-gray-700:hover {
+                background-color: var(--claude-workspace-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border-color: var(--claude-border-hover) !important;
+            }
+            
+            /* Dark mode gray text buttons */
+            .dark button[class*="dark:text-gray-200"] {
+                color: var(--claude-text-primary) !important;
+            }
+            
+            .dark button[class*="dark:hover:text-white"]:hover {
+                color: var(--claude-text-primary) !important;
+            }
+            
+            /* Dark mode buttons with gray hover backgrounds */
+            .dark button[class*="dark:hover:bg-gray-600"] {
+                background-color: var(--claude-card-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border: 1px solid var(--claude-border) !important;
+            }
+            
+            .dark button[class*="dark:hover:bg-gray-600"]:hover {
+                background-color: var(--claude-workspace-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border-color: var(--claude-border-hover) !important;
+            }
+            
+            .dark button.dark\\:hover\\:bg-gray-600\\/70 {
+                background-color: var(--claude-card-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border: 1px solid var(--claude-border) !important;
+            }
+            
+            .dark button.dark\\:hover\\:bg-gray-600\\/70:hover {
+                background-color: var(--claude-workspace-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border-color: var(--claude-border-hover) !important;
+            }
 
             /* Workspace Tab Styling - Including KB button and other tabs */
             [data-element-id*="workspace-tab"] span,
@@ -840,7 +1007,9 @@
             [data-element-id*="workspace-tab"] span.text-white\\/70,
             [data-element-id*="workspace-tab"] span[class*="text-white/70"],
             [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span.text-white\\/70,
-            [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span[class*="text-white/70"] {
+            [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span[class*="text-white/70"],
+            button span.text-white\\/70,
+            button span[class*="text-white/70"] {
                 color: var(--claude-text-secondary) !important;
                 background-color: transparent !important;
             }
@@ -875,12 +1044,33 @@
             [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span[class*="text-white/70"] svg {
                 color: var(--claude-text-secondary) !important;
             }
+            
+            /* Fix KB button text staying orange when inactive - target nested spans */
+            [data-element-id*="workspace-tab"] span.text-white\\/70 span,
+            [data-element-id*="workspace-tab"] span[class*="text-white/70"] span,
+            [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span.text-white\\/70 span,
+            [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span[class*="text-white/70"] span,
+            button span.text-white\\/70 span,
+            button span[class*="text-white/70"] span {
+                color: var(--claude-text-secondary) !important;
+            }
+            
+            /* Fix blue text buttons to use orange like hyperlinks */
+            button.text-blue-500,
+            button[class*="text-blue-500"] {
+                color: var(--claude-primary) !important;
+            }
+            
+            button.text-blue-500:hover,
+            button[class*="text-blue-500"]:hover {
+                color: var(--claude-primary-hover) !important;
+            }
 
             /* New Chat Button Styling - Muted orange with bright hover */
             [data-element-id="new-chat-button-in-side-bar"] {
-                background-color: var(--claude-primary-medium) !important;
+                background-color: var(--claude-primary) !important;
                 color: var(--claude-text-primary) !important;
-                border: 1px solid var(--claude-primary-medium) !important;
+                border: 1px solid var(--claude-primary) !important;
             }
             
             [data-element-id="new-chat-button-in-side-bar"] span {
@@ -907,9 +1097,9 @@
             
             /* Regenerate Button Styling - Muted orange with bright hover */
             [data-element-id="regenerate-button"] {
-                background-color: var(--claude-primary-medium) !important;
+                background-color: var(--claude-primary) !important;
                 color: var(--claude-text-primary) !important;
-                border: 1px solid var(--claude-primary-medium) !important;
+                border: 1px solid var(--claude-primary) !important;
             }
             
             /* User message specific override to maintain sidebar color */
@@ -1030,8 +1220,8 @@
 
     // Apply dynamic styles to elements that might be added later
     function applyDynamicStyles() {
-        // Force light mode by removing dark class
-        document.body.classList.remove('dark');
+        // Don't force light mode anymore - let user choose
+        // document.body.classList.remove('dark');
         
         // Apply custom styles to specific elements that might need special handling
         const elements = document.querySelectorAll('[class*="bg-gray-800"], [class*="text-white"]');
