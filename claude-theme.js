@@ -14,6 +14,7 @@
             primary: '#ff6b35',        // Claude's signature orange
             primaryHover: '#e55a2b',   // Darker orange for hover
             primaryLight: '#ff6b3520', // Light orange for backgrounds
+            primaryMedium: '#ff6b3530', // Medium orange for buttons - 10% less subtle
             
             // Backgrounds
             mainBg: '#fdfcfb',         // Claude's warm off-white main background
@@ -106,7 +107,7 @@
         
         // Chat and messages
         chatContainer: '[data-element-id="chat-container"]',
-        messageUser: '[data-element-id="message-user"]',
+        messageUser: '[data-element-id="user-message"]',
         messageAssistant: '[data-element-id="message-assistant"]',
         messageContainer: '[data-element-id="message-container"]',
         
@@ -114,6 +115,10 @@
         inputContainer: '[data-element-id="input-container"]',
         inputTextarea: '[data-element-id="input-textarea"]',
         sendButton: '[data-element-id="send-button"]',
+        regenerateButton: '[data-element-id="regenerate-button"]',
+        searchChatsBar: '[data-element-id="search-chats-bar"]',
+        tagSearchPanel: '[data-element-id="tag-search-panel"]',
+        customChatItem: '[data-element-id="custom-chat-item"]',
         
         // Common elements
         button: 'button',
@@ -181,6 +186,7 @@
                 --claude-primary: ${CONFIG.colors.primary};
                 --claude-primary-hover: ${CONFIG.colors.primaryHover};
                 --claude-primary-light: ${CONFIG.colors.primaryLight};
+            --claude-primary-medium: ${CONFIG.colors.primaryMedium};
                 --claude-main-bg: ${CONFIG.colors.mainBg};
                 --claude-sidebar-bg: ${CONFIG.colors.sidebarBg};
                 --claude-workspace-bg: ${CONFIG.colors.workspaceBg};
@@ -316,10 +322,27 @@
             /* Message Containers */
             ${SELECTORS.messageUser} {
                 background-color: var(--claude-sidebar-bg) !important;
+                color: var(--claude-text-primary) !important;
                 border-radius: var(--claude-radius-lg) !important;
                 border: 1px solid var(--claude-border) !important;
                 padding: ${CONFIG.spacing.md} !important;
                 margin: ${CONFIG.spacing.sm} 0 !important;
+            }
+
+            /* User Message Override - Keep sidebar color even with blue classes */
+            ${SELECTORS.messageUser}.bg-blue-600,
+            ${SELECTORS.messageUser}[class*="bg-blue-600"] {
+                background-color: var(--claude-sidebar-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border-color: var(--claude-border) !important;
+            }
+
+            ${SELECTORS.messageUser}.bg-blue-600:hover,
+            ${SELECTORS.messageUser}[class*="bg-blue-600"]:hover,
+            ${SELECTORS.messageUser}:hover {
+                background-color: var(--claude-sidebar-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border-color: var(--claude-border) !important;
             }
 
             ${SELECTORS.messageAssistant} {
@@ -365,9 +388,292 @@
                 box-shadow: var(--claude-shadow-md) !important;
             }
 
+            /* Regenerate Button */
+            ${SELECTORS.regenerateButton} {
+                background-color: var(--claude-primary) !important;
+                color: white !important;
+                border: none !important;
+                border-radius: var(--claude-radius-md) !important;
+                padding: ${CONFIG.spacing.sm} ${CONFIG.spacing.md} !important;
+                font-weight: var(--claude-font-weight-medium) !important;
+                cursor: pointer !important;
+                transition: all 0.2s ease !important;
+            }
+
+            ${SELECTORS.regenerateButton}:hover {
+                background-color: var(--claude-primary-hover) !important;
+                box-shadow: var(--claude-shadow-md) !important;
+            }
+
+            /* Search Field */
+            ${SELECTORS.searchChatsBar} {
+                background-color: var(--claude-sidebar-bg) !important;
+                color: var(--claude-text-primary) !important;
+            }
+
+            ${SELECTORS.searchChatsBar}::placeholder {
+                color: var(--claude-text-muted) !important;
+            }
+
+            /* Search Field Icons */
+            ${SELECTORS.searchChatsBar} + span,
+            ${SELECTORS.searchChatsBar} ~ button {
+                color: var(--claude-text-muted) !important;
+            }
+
+            ${SELECTORS.searchChatsBar} + span svg,
+            ${SELECTORS.searchChatsBar} ~ button svg {
+                color: var(--claude-text-muted) !important;
+            }
+
+            /* Tag Search Panel (Popover) */
+            ${SELECTORS.tagSearchPanel} {
+                background-color: var(--claude-card-bg) !important;
+                border: 1px solid var(--claude-border) !important;
+                border-radius: var(--claude-radius-lg) !important;
+                box-shadow: var(--claude-shadow-lg) !important;
+            }
+
+            /* Tag Search Panel Override - Ensure it stays white even with gray classes */
+            ${SELECTORS.tagSearchPanel}.bg-gray-600,
+            ${SELECTORS.tagSearchPanel}[class*="bg-gray-600"] {
+                background-color: var(--claude-card-bg) !important;
+                border: 1px solid var(--claude-border) !important;
+            }
+
+            ${SELECTORS.tagSearchPanel} label {
+                color: var(--claude-text-primary) !important;
+            }
+
+            ${SELECTORS.tagSearchPanel} input {
+                background-color: var(--claude-sidebar-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border: 1px solid var(--claude-border) !important;
+                border-radius: var(--claude-radius-md) !important;
+            }
+
+            ${SELECTORS.tagSearchPanel} input::placeholder {
+                color: var(--claude-text-muted) !important;
+            }
+
+            ${SELECTORS.tagSearchPanel} p {
+                color: var(--claude-text-secondary) !important;
+            }
+
+            /* Tag Search Panel Buttons */
+            ${SELECTORS.tagSearchPanel} button {
+                border-radius: var(--claude-radius-md) !important;
+                font-weight: var(--claude-font-weight-medium) !important;
+                transition: all 0.2s ease !important;
+            }
+
+            /* Reset button (orange) */
+            ${SELECTORS.tagSearchPanel} button:first-child {
+                background-color: transparent !important;
+                color: var(--claude-primary) !important;
+                border: none !important;
+            }
+
+            ${SELECTORS.tagSearchPanel} button:first-child:hover {
+                background-color: var(--claude-primary-light) !important;
+                color: var(--claude-primary-hover) !important;
+            }
+
+            /* Cancel button */
+            ${SELECTORS.tagSearchPanel} button:nth-child(2) {
+                background-color: transparent !important;
+                color: var(--claude-text-primary) !important;
+                border: 1px solid var(--claude-border) !important;
+            }
+
+            ${SELECTORS.tagSearchPanel} button:nth-child(2):hover {
+                background-color: var(--claude-sidebar-bg) !important;
+                border-color: var(--claude-border-hover) !important;
+            }
+
+            /* OK button (primary) */
+            ${SELECTORS.tagSearchPanel} button:last-child {
+                background-color: var(--claude-primary) !important;
+                color: white !important;
+                border: none !important;
+            }
+
+            ${SELECTORS.tagSearchPanel} button:last-child:hover {
+                background-color: var(--claude-primary-hover) !important;
+                box-shadow: var(--claude-shadow-md) !important;
+            }
+
+            /* Chat Items */
+            ${SELECTORS.customChatItem} {
+                color: var(--claude-text-primary) !important;
+                border-radius: var(--claude-radius-md) !important;
+                transition: all 0.2s ease !important;
+            }
+
+            ${SELECTORS.customChatItem}:hover {
+                background-color: var(--claude-sidebar-bg) !important;
+            }
+
+            /* Chat Item Override - Prevent blue button styling from affecting chat items */
+            ${SELECTORS.customChatItem}.bg-blue-600,
+            ${SELECTORS.customChatItem}[class*="bg-blue-600"] {
+                background-color: transparent !important;
+                color: var(--claude-text-primary) !important;
+                border-color: transparent !important;
+            }
+
+            ${SELECTORS.customChatItem}.bg-blue-600:hover,
+            ${SELECTORS.customChatItem}[class*="bg-blue-600"]:hover,
+            ${SELECTORS.customChatItem}:hover {
+                background-color: var(--claude-sidebar-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border-color: transparent !important;
+            }
+
+            ${SELECTORS.customChatItem}:active,
+            ${SELECTORS.customChatItem}[data-selected="true"] {
+                background-color: var(--claude-primary-light) !important;
+            }
+
+            /* Chat Item Buttons */
+            ${SELECTORS.customChatItem} button {
+                color: var(--claude-text-secondary) !important;
+                border-radius: var(--claude-radius-sm) !important;
+                transition: all 0.2s ease !important;
+            }
+
+            ${SELECTORS.customChatItem} button:hover {
+                background-color: var(--claude-primary-light) !important;
+                color: var(--claude-text-primary) !important;
+            }
+
+            /* Chat Item Checkbox */
+            ${SELECTORS.customChatItem} input[type="checkbox"] {
+                background-color: var(--claude-card-bg) !important;
+                border: 1px solid var(--claude-border) !important;
+                border-radius: var(--claude-radius-sm) !important;
+                color: var(--claude-primary) !important;
+            }
+
+            ${SELECTORS.customChatItem} input[type="checkbox"]:checked {
+                background-color: var(--claude-primary) !important;
+                border-color: var(--claude-primary) !important;
+            }
+
+            ${SELECTORS.customChatItem} input[type="checkbox"]:focus {
+                outline: 2px solid var(--claude-primary-light) !important;
+                outline-offset: 2px !important;
+            }
+
+            /* Global Checkbox Styling */
+            input[type="checkbox"] {
+                background-color: var(--claude-card-bg) !important;
+                border: 1px solid var(--claude-border) !important;
+                border-radius: var(--claude-radius-sm) !important;
+                color: var(--claude-primary) !important;
+            }
+
+            input[type="checkbox"]:checked {
+                background-color: var(--claude-primary) !important;
+                border-color: var(--claude-primary) !important;
+            }
+
+            input[type="checkbox"]:focus {
+                outline: 2px solid var(--claude-primary-light) !important;
+                outline-offset: 2px !important;
+            }
+
+            input[type="checkbox"]:hover {
+                border-color: var(--claude-border-hover) !important;
+            }
+
+            /* Global Blue Button Override - Exclude specific buttons and user messages */
+            button.bg-blue-600:not([data-element-id="new-chat-button-in-side-bar"]):not([data-element-id="regenerate-button"]),
+            button[class*="bg-blue-600"]:not([data-element-id="new-chat-button-in-side-bar"]):not([data-element-id="regenerate-button"]),
+            .bg-blue-600:not([data-element-id="new-chat-button-in-side-bar"]):not([data-element-id="regenerate-button"]):not([data-element-id="user-message"]) {
+                background-color: var(--claude-primary) !important;
+                color: white !important;
+                border-color: var(--claude-primary) !important;
+            }
+
+            button.bg-blue-600:hover:not([data-element-id="new-chat-button-in-side-bar"]):not([data-element-id="regenerate-button"]),
+            button[class*="bg-blue-600"]:hover:not([data-element-id="new-chat-button-in-side-bar"]):not([data-element-id="regenerate-button"]),
+            .bg-blue-600:hover:not([data-element-id="new-chat-button-in-side-bar"]):not([data-element-id="regenerate-button"]):not([data-element-id="user-message"]),
+            button.hover\\:bg-blue-700:hover:not([data-element-id="new-chat-button-in-side-bar"]):not([data-element-id="regenerate-button"]),
+            button[class*="hover:bg-blue-700"]:hover:not([data-element-id="new-chat-button-in-side-bar"]):not([data-element-id="regenerate-button"]),
+            .hover\\:bg-blue-700:hover:not([data-element-id="new-chat-button-in-side-bar"]):not([data-element-id="regenerate-button"]),
+            /* Search action button specific override */
+            [data-element-id*="search-action"]:hover {
+                background-color: var(--claude-primary-hover) !important;
+                border-color: var(--claude-primary-hover) !important;
+            }
+
+            button.bg-blue-600:focus:not([data-element-id="new-chat-button-in-side-bar"]):not([data-element-id="regenerate-button"]),
+            button[class*="bg-blue-600"]:focus:not([data-element-id="new-chat-button-in-side-bar"]):not([data-element-id="regenerate-button"]),
+            .bg-blue-600:focus:not([data-element-id="new-chat-button-in-side-bar"]):not([data-element-id="regenerate-button"]):not([data-element-id="user-message"]),
+            button[class*="focus:ring-blue-"]:focus:not([data-element-id="new-chat-button-in-side-bar"]):not([data-element-id="regenerate-button"]),
+            .focus\\:ring-blue-500:focus:not([data-element-id="new-chat-button-in-side-bar"]):not([data-element-id="regenerate-button"]) {
+                outline: 2px solid var(--claude-primary-light) !important;
+                outline-offset: 2px !important;
+            }
+
+            /* Global Gray Button Override */
+            button.bg-gray-600,
+            button[class*="bg-gray-600"],
+            .bg-gray-600 {
+                background-color: var(--claude-text-secondary) !important;
+                color: white !important;
+                border-color: var(--claude-text-secondary) !important;
+            }
+
+            button.bg-gray-600:hover,
+            button[class*="bg-gray-600"]:hover,
+            .bg-gray-600:hover,
+            button.hover\\:bg-gray-700:hover,
+            button[class*="hover:bg-gray-700"]:hover,
+            .hover\\:bg-gray-700:hover {
+                background-color: var(--claude-text-primary) !important;
+                border-color: var(--claude-text-primary) !important;
+            }
+
+            button.bg-gray-600:focus,
+            button[class*="bg-gray-600"]:focus,
+            .bg-gray-600:focus {
+                outline: 2px solid var(--claude-text-muted) !important;
+                outline-offset: 2px !important;
+            }
+
+            /* Global Slate Background Button Override - Only solid backgrounds, exclude buttons with slate hover but no slate bg */
+            button.bg-slate-900:not([class*="text-slate"]):not([class*="hover:bg-slate-900/10"]):not([class*="hover:bg-slate-900/20"]):not([class*="hover:bg-slate-900/25"]):not([class*="bg-slate-900/20"]),
+            button[class*="bg-slate-900"]:not([class*="text-slate"]):not([class*="hover:bg-slate-900/10"]):not([class*="hover:bg-slate-900/20"]):not([class*="hover:bg-slate-900/25"]):not([class*="bg-slate-900/20"]),
+            .bg-slate-900:not([class*="text-slate"]):not([class*="hover:bg-slate-900/10"]):not([class*="hover:bg-slate-900/20"]):not([class*="hover:bg-slate-900/25"]):not([class*="bg-slate-900/20"]) {
+                background-color: var(--claude-text-primary) !important;
+                color: white !important;
+                border-color: var(--claude-text-primary) !important;
+            }
+
+            /* Override inline styles for slate buttons */
+            button.bg-slate-900[style*="color: var(--claude-text-primary)"],
+            button[class*="bg-slate-900"][style*="color: var(--claude-text-primary)"] {
+                color: white !important;
+            }
+
+            button.bg-slate-900:not([class*="text-slate"]):not([class*="hover:bg-slate-900/10"]):not([class*="hover:bg-slate-900/20"]):not([class*="hover:bg-slate-900/25"]):not([class*="bg-slate-900/20"]):hover,
+            button[class*="bg-slate-900"]:not([class*="text-slate"]):not([class*="hover:bg-slate-900/10"]):not([class*="hover:bg-slate-900/20"]):not([class*="hover:bg-slate-900/25"]):not([class*="bg-slate-900/20"]):hover,
+            .bg-slate-900:not([class*="text-slate"]):not([class*="hover:bg-slate-900/10"]):not([class*="hover:bg-slate-900/20"]):not([class*="hover:bg-slate-900/25"]):not([class*="bg-slate-900/20"]):hover {
+                background-color: var(--claude-text-secondary) !important;
+                border-color: var(--claude-text-secondary) !important;
+            }
+
+            button.bg-slate-900:not([class*="text-slate"]):not([class*="hover:bg-slate-900/10"]):not([class*="hover:bg-slate-900/20"]):not([class*="hover:bg-slate-900/25"]):not([class*="bg-slate-900/20"]):focus,
+            button[class*="bg-slate-900"]:not([class*="text-slate"]):not([class*="hover:bg-slate-900/10"]):not([class*="hover:bg-slate-900/20"]):not([class*="hover:bg-slate-900/25"]):not([class*="bg-slate-900/20"]):focus,
+            .bg-slate-900:not([class*="text-slate"]):not([class*="hover:bg-slate-900/10"]):not([class*="hover:bg-slate-900/20"]):not([class*="hover:bg-slate-900/25"]):not([class*="bg-slate-900/20"]):focus {
+                outline: 2px solid var(--claude-text-muted) !important;
+                outline-offset: 2px !important;
+            }
+
             /* Generic button styling */
             button:not([class*="workspace-tab"]):not([data-element-id*="workspace-tab"]) {
-                border-radius: var(--claude-radius-md) !important;
                 transition: all 0.2s ease !important;
                 font-family: var(--claude-font-family) !important;
             }
@@ -410,6 +716,18 @@
                 padding: ${CONFIG.spacing.md} !important;
                 overflow-x: auto !important;
                 font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
+                line-height: 1.5 !important;
+                white-space: pre-wrap !important;
+                word-wrap: break-word !important;
+            }
+
+            pre code {
+                background-color: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+                line-height: inherit !important;
+                font-size: inherit !important;
+                white-space: inherit !important;
             }
 
             /* Modals and dropdowns */
@@ -493,9 +811,187 @@
                 background-color: var(--claude-card-bg) !important;
             }
 
-            /* Animation improvements */
+            /* Workspace Tab Styling - Including KB button and other tabs */
+            [data-element-id*="workspace-tab"] span,
+            [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span {
+                transition: background-color 0.2s ease !important;
+                /* Remove color transition to prevent flash */
+            }
+            
+            /* Immediate color application for chat tab */
+            [data-element-id="workspace-tab-chat"] span {
+                color: var(--claude-text-primary) !important;
+            }
+            
+            [data-element-id="workspace-tab-chat"] svg {
+                color: var(--claude-text-primary) !important;
+            }
+            
+            /* Active workspace tab styling */
+            [data-element-id*="workspace-tab"] span.bg-white\\/20,
+            [data-element-id*="workspace-tab"] span[class*="bg-white/20"],
+            [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span.bg-white\\/20,
+            [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span[class*="bg-white/20"] {
+                background-color: var(--claude-sidebar-bg) !important;
+                color: var(--claude-primary) !important;
+            }
+            
+            /* Inactive workspace tab styling */
+            [data-element-id*="workspace-tab"] span.text-white\\/70,
+            [data-element-id*="workspace-tab"] span[class*="text-white/70"],
+            [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span.text-white\\/70,
+            [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span[class*="text-white/70"] {
+                color: var(--claude-text-secondary) !important;
+                background-color: transparent !important;
+            }
+            
+            /* Hover state for workspace tabs */
+            [data-element-id*="workspace-tab"] span.hover\\:bg-white\\/20:hover,
+            [data-element-id*="workspace-tab"] span[class*="hover:bg-white/20"]:hover,
+            [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span.hover\\:bg-white\\/20:hover,
+            [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span[class*="hover:bg-white/20"]:hover {
+                background-color: var(--claude-sidebar-bg) !important;
+                color: var(--claude-primary) !important;
+            }
+            
+            /* SVG icons in workspace tabs */
+            [data-element-id*="workspace-tab"] svg,
+            [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) svg {
+                transition: all 0.2s ease !important;
+            }
+            
+            /* Active tab SVG fill */
+            [data-element-id*="workspace-tab"] span.bg-white\\/20 svg,
+            [data-element-id*="workspace-tab"] span[class*="bg-white/20"] svg,
+            [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span.bg-white\\/20 svg,
+            [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span[class*="bg-white/20"] svg {
+                color: var(--claude-primary) !important;
+            }
+            
+            /* Inactive tab SVG fill */
+            [data-element-id*="workspace-tab"] span.text-white\\/70 svg,
+            [data-element-id*="workspace-tab"] span[class*="text-white/70"] svg,
+            [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span.text-white\\/70 svg,
+            [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span[class*="text-white/70"] svg {
+                color: var(--claude-text-secondary) !important;
+            }
+
+            /* New Chat Button Styling - Muted orange with bright hover */
+            [data-element-id="new-chat-button-in-side-bar"] {
+                background-color: var(--claude-primary-medium) !important;
+                color: var(--claude-text-primary) !important;
+                border: 1px solid var(--claude-primary-medium) !important;
+            }
+            
+            [data-element-id="new-chat-button-in-side-bar"] span {
+                color: var(--claude-text-primary) !important;
+            }
+            
+            [data-element-id="new-chat-button-in-side-bar"] svg {
+                color: var(--claude-text-primary) !important;
+            }
+            
+            [data-element-id="new-chat-button-in-side-bar"]:hover {
+                background-color: var(--claude-primary) !important;
+                color: white !important;
+                border-color: var(--claude-primary) !important;
+            }
+            
+            [data-element-id="new-chat-button-in-side-bar"]:hover span {
+                color: white !important;
+            }
+            
+            [data-element-id="new-chat-button-in-side-bar"]:hover svg {
+                color: white !important;
+            }
+            
+            /* Regenerate Button Styling - Muted orange with bright hover */
+            [data-element-id="regenerate-button"] {
+                background-color: var(--claude-primary-medium) !important;
+                color: var(--claude-text-primary) !important;
+                border: 1px solid var(--claude-primary-medium) !important;
+            }
+            
+            /* User message specific override to maintain sidebar color */
+            [data-element-id="user-message"] {
+                background-color: var(--claude-sidebar-bg) !important;
+                color: var(--claude-text-primary) !important;
+            }
+            
+            [data-element-id="regenerate-button"] span {
+                color: var(--claude-text-primary) !important;
+            }
+            
+            [data-element-id="regenerate-button"] svg {
+                color: var(--claude-text-primary) !important;
+            }
+            
+            [data-element-id="regenerate-button"]:hover {
+                background-color: var(--claude-primary) !important;
+                color: white !important;
+                border-color: var(--claude-primary) !important;
+            }
+            
+            [data-element-id="regenerate-button"]:hover span {
+                color: white !important;
+            }
+            
+            [data-element-id="regenerate-button"]:hover svg {
+                color: white !important;
+            }
+            
+            /* OpenAI Model Icons Fix */
+            .bg-\\[\\#0d0d0d\\] {
+                color: white !important;
+            }
+            
+            .bg-\\[\\#0d0d0d\\] svg {
+                color: white !important;
+            }
+            
+
+            /* Account Popover Menu Styling */
+            [data-headlessui-state="open"] div[style*="background: url"] {
+                background: var(--claude-workspace-bg) !important;
+                color: var(--claude-text-primary) !important;
+            }
+            
+            /* Text colors in account popover */
+            [data-headlessui-state="open"] div[style*="background: url"] .text-white\\/80,
+            [data-headlessui-state="open"] div[style*="background: url"] .text-white\\/50 {
+                color: var(--claude-text-primary) !important;
+            }
+            
+            /* Button styling in account popover */
+            [data-headlessui-state="open"] div[style*="background: url"] button {
+                background-color: var(--claude-primary-light) !important;
+                color: var(--claude-text-primary) !important;
+            }
+            
+            [data-headlessui-state="open"] div[style*="background: url"] button:hover {
+                background-color: var(--claude-primary) !important;
+                color: white !important;
+            }
+            
+            /* Links in account popover */
+            [data-headlessui-state="open"] div[style*="background: url"] a {
+                background-color: var(--claude-primary-light) !important;
+                color: var(--claude-text-primary) !important;
+            }
+            
+            [data-headlessui-state="open"] div[style*="background: url"] a:hover {
+                background-color: var(--claude-primary) !important;
+                color: white !important;
+            }
+            
+            /* Border styling in account popover */
+            [data-headlessui-state="open"] div[style*="background: url"] hr {
+                border-color: var(--claude-border) !important;
+            }
+
+            /* Animation improvements - Removed color transition to prevent flashing */
             * {
-                transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease !important;
+                transition: background-color 0.2s ease, border-color 0.2s ease !important;
             }
 
             /* Focus improvements for accessibility */
