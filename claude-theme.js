@@ -1055,6 +1055,16 @@
                 color: var(--claude-text-secondary) !important;
             }
             
+            /* Fix chat description text in light mode sidebar */
+            :not(.dark) [data-element-id*="chat-"] div.text-white\\/70,
+            :not(.dark) [data-element-id*="chat-"] div[class*="text-white/70"],
+            :not(.dark) [data-element-id*="chat-"] span.text-white\\/70,
+            :not(.dark) [data-element-id*="chat-"] span[class*="text-white/70"],
+            :not(.dark) .text-white\\/70.text-xs,
+            :not(.dark) [class*="text-white/70"].text-xs {
+                color: var(--claude-text-secondary) !important;
+            }
+            
             /* Fix blue text buttons to use orange like hyperlinks */
             button.text-blue-500,
             button[class*="text-blue-500"] {
