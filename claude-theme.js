@@ -1117,6 +1117,15 @@
                 color: white !important;
             }
             
+            /* Fix tags with dark backgrounds to use white text */
+            button[style*="background-color"][class*="text-white"] {
+                color: white !important;
+            }
+            
+            button[style*="background-color"][style*="color: var(--claude-text-primary)"][class*="text-white"] {
+                color: white !important;
+            }
+            
             /* Fix create character buttons - main button and arrow */
             [data-element-id="create-chatacter"] {
                 background-color: var(--claude-primary) !important;
