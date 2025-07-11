@@ -16,10 +16,10 @@
             primaryLight: '#ff6b3520', // Light orange for backgrounds
             
             // Backgrounds
-            mainBg: '#ffffff',         // Pure white main background
-            sidebarBg: '#f8f9fa',      // Light gray sidebar
-            workspaceBg: '#f0f2f5',    // Slightly darker for workspace
-            cardBg: '#ffffff',         // White for cards/containers
+            mainBg: '#fdfcfb',         // Claude's warm off-white main background
+            sidebarBg: '#f7f5f3',      // Claude's warm beige sidebar
+            workspaceBg: '#f0ede8',    // Slightly darker beige for workspace
+            cardBg: '#ffffff',         // Pure white for cards/containers
             
             // Text colors
             textPrimary: '#1a1a1a',    // Dark text
@@ -315,7 +315,7 @@
 
             /* Message Containers */
             ${SELECTORS.messageUser} {
-                background-color: var(--claude-primary-light) !important;
+                background-color: var(--claude-sidebar-bg) !important;
                 border-radius: var(--claude-radius-lg) !important;
                 border: 1px solid var(--claude-border) !important;
                 padding: ${CONFIG.spacing.md} !important;
