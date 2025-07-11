@@ -981,8 +981,7 @@
             /* Workspace Tab Styling - Including KB button and other tabs */
             [data-element-id*="workspace-tab"] span,
             [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span {
-                transition: background-color 0.2s ease !important;
-                /* Remove color transition to prevent flash */
+                transition: none !important;
             }
             
             /* Immediate color application for chat tab */
@@ -1021,6 +1020,24 @@
             [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span[class*="hover:bg-white/20"]:hover {
                 background-color: var(--claude-sidebar-bg) !important;
                 color: var(--claude-primary) !important;
+            }
+            
+            /* Keep workspace tab text colors consistent on hover in light mode */
+            :not(.dark) [data-element-id*="workspace-tab"] span[class*="hover:bg-white/20"]:hover span,
+            :not(.dark) [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span[class*="hover:bg-white/20"]:hover span {
+                color: var(--claude-text-primary) !important;
+            }
+            
+            /* Override orange text on hover for workspace tabs - more specific selector */
+            :not(.dark) [data-element-id*="workspace-tab"] span:hover,
+            :not(.dark) [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span:hover {
+                color: var(--claude-text-primary) !important;
+            }
+            
+            /* Even more specific - target the nested span text elements */
+            :not(.dark) [data-element-id*="workspace-tab"] span:hover span[class*="font-"],
+            :not(.dark) [data-element-id="workspace-bar"] button:not([data-element-id*="workspace-profile"]) span:hover span[class*="font-"] {
+                color: var(--claude-text-primary) !important;
             }
             
             /* SVG icons in workspace tabs */
@@ -1074,6 +1091,91 @@
             button.text-blue-500:hover,
             button[class*="text-blue-500"]:hover {
                 color: var(--claude-primary-hover) !important;
+            }
+            
+            /* Fix black background elements to use white text */
+            .bg-black,
+            [class*="bg-black"] {
+                background-color: var(--claude-text-primary) !important;
+                color: white !important;
+            }
+            
+            .bg-black[style*="color"],
+            [class*="bg-black"][style*="color"] {
+                color: white !important;
+            }
+            
+            /* Dark mode fix for black background elements */
+            .dark .bg-black,
+            .dark [class*="bg-black"] {
+                background-color: #000000 !important;
+                color: white !important;
+            }
+            
+            .dark .bg-black[style*="color"],
+            .dark [class*="bg-black"][style*="color"] {
+                color: white !important;
+            }
+            
+            /* Fix create character buttons - main button and arrow */
+            [data-element-id="create-chatacter"] {
+                background-color: var(--claude-primary) !important;
+                color: white !important;
+                border-color: var(--claude-primary) !important;
+            }
+            
+            /* Main create character button (with text) */
+            [data-element-id="create-chatacter"]:not([class*="rounded-l-none"]) {
+                padding: 0.625rem 1rem !important;
+                border-top-right-radius: 0 !important;
+                border-bottom-right-radius: 0 !important;
+            }
+            
+            /* Arrow button (dropdown) */
+            [data-element-id="create-chatacter"][class*="rounded-l-none"] {
+                padding: 0.625rem !important;
+                border-top-left-radius: 0 !important;
+                border-bottom-left-radius: 0 !important;
+                border-top-right-radius: var(--claude-radius-xl) !important;
+                border-bottom-right-radius: var(--claude-radius-xl) !important;
+                border-left-color: rgba(255, 255, 255, 0.3) !important;
+            }
+            
+            /* Dark mode specific fixes */
+            .dark [data-element-id="create-chatacter"] {
+                background-color: var(--claude-primary) !important;
+                color: white !important;
+                border-color: var(--claude-primary) !important;
+            }
+            
+            .dark [data-element-id="create-chatacter"]:not([class*="rounded-l-none"]) {
+                padding: 0.625rem 1rem !important;
+                border-top-right-radius: 0 !important;
+                border-bottom-right-radius: 0 !important;
+            }
+            
+            .dark [data-element-id="create-chatacter"][class*="rounded-l-none"] {
+                padding: 0.625rem !important;
+                border-top-left-radius: 0 !important;
+                border-bottom-left-radius: 0 !important;
+                border-top-right-radius: var(--claude-radius-xl) !important;
+                border-bottom-right-radius: var(--claude-radius-xl) !important;
+                border-left-color: rgba(255, 255, 255, 0.3) !important;
+            }
+            
+            .dark [data-element-id="create-chatacter"]:hover {
+                background-color: var(--claude-primary-hover) !important;
+                border-color: var(--claude-primary-hover) !important;
+            }
+            
+            [data-element-id="create-chatacter"]:hover {
+                background-color: var(--claude-primary-hover) !important;
+                border-color: var(--claude-primary-hover) !important;
+            }
+            
+            [data-element-id="create-chatacter"] span,
+            [data-element-id="create-chatacter"] svg {
+                color: white !important;
             }
 
             /* New Chat Button Styling - Muted orange with bright hover */
@@ -1140,6 +1242,42 @@
                 color: white !important;
             }
             
+            /* Send Button and More Options Button Styling */
+            [data-element-id="send-button"] {
+                background-color: var(--claude-primary) !important;
+                color: white !important;
+                border-color: var(--claude-primary) !important;
+                border-top-right-radius: 0 !important;
+                border-bottom-right-radius: 0 !important;
+            }
+            
+            [data-element-id="send-button"]:hover {
+                background-color: var(--claude-primary-hover) !important;
+                border-color: var(--claude-primary-hover) !important;
+            }
+            
+            [data-element-id="more-options-button"] {
+                background-color: var(--claude-primary) !important;
+                color: white !important;
+                border-color: var(--claude-primary) !important;
+                border-left-color: rgba(255, 255, 255, 0.3) !important;
+                border-top-left-radius: 0 !important;
+                border-bottom-left-radius: 0 !important;
+                border-top-right-radius: var(--claude-radius-md) !important;
+                border-bottom-right-radius: var(--claude-radius-md) !important;
+                margin-left: -1px !important;
+            }
+            
+            [data-element-id="more-options-button"]:hover {
+                background-color: var(--claude-primary-hover) !important;
+                border-color: var(--claude-primary-hover) !important;
+                border-left-color: rgba(255, 255, 255, 0.3) !important;
+            }
+            
+            [data-element-id="more-options-button"] svg {
+                color: white !important;
+            }
+            
             /* OpenAI Model Icons Fix */
             .bg-\\[\\#0d0d0d\\] {
                 color: white !important;
@@ -1189,9 +1327,14 @@
                 border-color: var(--claude-border) !important;
             }
 
-            /* Animation improvements - Removed color transition to prevent flashing */
+            /* Animation improvements - Removed all color transitions to prevent flashing */
             * {
-                transition: background-color 0.2s ease, border-color 0.2s ease !important;
+                transition: none !important;
+            }
+            
+            /* Only allow non-color transitions for specific elements */
+            button:not([data-element-id*="workspace-tab"]):not([class*="workspace-tab"]) {
+                transition: transform 0.2s ease, box-shadow 0.2s ease !important;
             }
 
             /* Focus improvements for accessibility */
