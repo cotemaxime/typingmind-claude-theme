@@ -1,467 +1,587 @@
-(() => {
-  'use strict';
+/**
+ * Claude AI Theme for TypingMind
+ * A clean, minimalist theme inspired by Claude AI's interface
+ * Light mode optimized with potential for dark mode expansion
+ */
 
-  const CONFIG = {
-    colors: {
-      primary: '#D97706',
-      secondary: '#F59E0B',
-      background: '#FAFAFA',
-      sidebar: '#FFFFFF',
-      surface: '#FFFFFF',
-      text: '#111827',
-      textSecondary: '#6B7280',
-      border: '#E5E7EB',
-      hover: '#F3F4F6',
-      userMessage: '#F0F9FF',
-      assistantMessage: '#FFFFFF',
-      codeBackground: '#F9FAFB',
-      codeBorder: '#E5E7EB',
-      orange: '#D97706',
-      lightOrange: '#FED7AA'
-    },
-    fonts: {
-      primary: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-      mono: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace'
-    },
-    spacing: {
-      borderRadius: '8px',
-      padding: '12px',
-      margin: '8px'
+(function() {
+    'use strict';
+
+    // Configuration
+    const CONFIG = {
+        colors: {
+            // Main colors
+            primary: '#ff6b35',        // Claude's signature orange
+            primaryHover: '#e55a2b',   // Darker orange for hover
+            primaryLight: '#ff6b3520', // Light orange for backgrounds
+            
+            // Backgrounds
+            mainBg: '#ffffff',         // Pure white main background
+            sidebarBg: '#f8f9fa',      // Light gray sidebar
+            workspaceBg: '#f0f2f5',    // Slightly darker for workspace
+            cardBg: '#ffffff',         // White for cards/containers
+            
+            // Text colors
+            textPrimary: '#1a1a1a',    // Dark text
+            textSecondary: '#6b7280',  // Gray text
+            textMuted: '#9ca3af',      // Muted text
+            
+            // Borders and dividers
+            border: '#e5e7eb',         // Light gray border
+            borderHover: '#d1d5db',    // Slightly darker border
+            
+            // Status colors
+            success: '#10b981',
+            error: '#ef4444',
+            warning: '#f59e0b',
+            info: '#3b82f6',
+        },
+        
+        typography: {
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+            fontSize: {
+                xs: '0.75rem',
+                sm: '0.875rem',
+                base: '1rem',
+                lg: '1.125rem',
+                xl: '1.25rem',
+                '2xl': '1.5rem',
+            },
+            fontWeight: {
+                normal: '400',
+                medium: '500',
+                semibold: '600',
+                bold: '700',
+            },
+        },
+        
+        spacing: {
+            xs: '0.25rem',
+            sm: '0.5rem',
+            md: '1rem',
+            lg: '1.5rem',
+            xl: '2rem',
+            '2xl': '3rem',
+        },
+        
+        borderRadius: {
+            sm: '0.375rem',
+            md: '0.5rem',
+            lg: '0.75rem',
+            xl: '1rem',
+            '2xl': '1.5rem',
+        },
+        
+        shadows: {
+            sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+            md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+            lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        },
+    };
+
+    // Selectors for different TypingMind elements
+    const SELECTORS = {
+        // Main structure
+        body: 'body',
+        mainContainer: '#__next',
+        customTheme: '.custom-theme',
+        
+        // Sidebar and navigation
+        sidebarBackground: '[data-element-id="side-bar-background"]',
+        sidebarBeginning: '[data-element-id="sidebar-beginning-part"]',
+        workspaceBar: '[data-element-id="workspace-bar"]',
+        navContainer: '[data-element-id="nav-container"]',
+        
+        // Buttons and interactive elements
+        newChatButton: '[data-element-id="new-chat-button-in-side-bar"]',
+        workspaceTabChat: '[data-element-id="workspace-tab-chat"]',
+        workspaceTabAgents: '[data-element-id="workspace-tab-agents"]',
+        workspaceTabPrompts: '[data-element-id="workspace-tab-prompts"]',
+        workspaceTabPlugins: '[data-element-id="workspace-tab-plugins"]',
+        workspaceTabModels: '[data-element-id="workspace-tab-models"]',
+        workspaceTabTeams: '[data-element-id="workspace-tab-teams"]',
+        workspaceTabSettings: '[data-element-id="workspace-tab-settings"]',
+        userProfileButton: '[data-element-id="workspace-profile-button"]',
+        userProfileImage: '[data-element-id="user-profile-image"]',
+        
+        // Chat and messages
+        chatContainer: '[data-element-id="chat-container"]',
+        messageUser: '[data-element-id="message-user"]',
+        messageAssistant: '[data-element-id="message-assistant"]',
+        messageContainer: '[data-element-id="message-container"]',
+        
+        // Input area
+        inputContainer: '[data-element-id="input-container"]',
+        inputTextarea: '[data-element-id="input-textarea"]',
+        sendButton: '[data-element-id="send-button"]',
+        
+        // Common elements
+        button: 'button',
+        input: 'input',
+        textarea: 'textarea',
+        select: 'select',
+        
+        // Generic classes
+        card: '.card',
+        modal: '.modal',
+        dropdown: '.dropdown',
+        tooltip: '.tooltip',
+    };
+
+    // Utility functions
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
     }
-  };
 
-  const SELECTORS = {
-    body: 'body',
-    sidebar: '[data-element-id="nav-container"]',
-    mainContent: '[data-element-id="main-content-area"]',
-    newChatButton: 'button[class*="bg-orange"], button[class*="bg-amber"]',
-    chatItem: 'div[class*="cursor-pointer"][class*="hover:"]',
-    messageContainer: 'div[class*="message"], div[class*="chat-message"]',
-    userMessage: 'div[class*="user"], div[class*="human"]',
-    assistantMessage: 'div[class*="assistant"], div[class*="ai"]',
-    codeBlock: 'pre, code',
-    inputArea: 'textarea, input[type="text"]',
-    sendButton: 'button[class*="send"], button[type="submit"]'
-  };
-
-  function injectCSS(css) {
-    const style = document.createElement('style');
-    style.textContent = css;
-    document.head.appendChild(style);
-  }
-
-  function applySidebarStyles() {
-    const sidebarCSS = `
-      /* Sidebar container - target exact classes from inspector */
-      [data-element-id="nav-container"],
-      nav[data-element-id="side-bar-background"],
-      .jsx-7078ffb922cb3c38 {
-        background-color: ${CONFIG.colors.sidebar} !important;
-        border-right: 1px solid ${CONFIG.colors.border} !important;
-        color: ${CONFIG.colors.text} !important;
-      }
-
-      /* New Chat Button - exact selector from inspector */
-      button[data-element-id="new-chat-button-in-side-bar"],
-      button[class*="bg-blue-600"] {
-        background-color: ${CONFIG.colors.orange} !important;
-        color: white !important;
-        border: none !important;
-        border-radius: ${CONFIG.spacing.borderRadius} !important;
-        padding: 8px 16px !important;
-        font-weight: 500 !important;
-        transition: all 0.2s ease !important;
-      }
-
-      button[data-element-id="new-chat-button-in-side-bar"]:hover,
-      button[class*="bg-blue-600"]:hover {
-        background-color: #B45309 !important;
-        transform: translateY(-1px) !important;
-      }
-
-      /* Sidebar beginning part */
-      div[data-element-id="sidebar-beginning-part"] {
-        background-color: ${CONFIG.colors.sidebar} !important;
-      }
-
-      /* Chat history items */
-      nav div[class*="cursor-pointer"],
-      div[class*="jsx-"] div[class*="cursor-pointer"],
-      div[role="button"] {
-        background-color: transparent !important;
-        color: ${CONFIG.colors.textSecondary} !important;
-        border-radius: ${CONFIG.spacing.borderRadius} !important;
-        margin: 2px 0 !important;
-        padding: 8px 12px !important;
-        transition: all 0.2s ease !important;
-      }
-
-      nav div[class*="cursor-pointer"]:hover,
-      div[class*="jsx-"] div[class*="cursor-pointer"]:hover,
-      div[role="button"]:hover {
-        background-color: ${CONFIG.colors.hover} !important;
-        color: ${CONFIG.colors.text} !important;
-      }
-
-      /* Active/selected chat item */
-      nav div[class*="cursor-pointer"][class*="bg-"],
-      div[class*="jsx-"] div[class*="bg-"] {
-        background-color: ${CONFIG.colors.lightOrange} !important;
-        color: ${CONFIG.colors.text} !important;
-      }
-    `;
-    injectCSS(sidebarCSS);
-  }
-
-  function applyMainContentStyles() {
-    const mainContentCSS = `
-      /* Main content area - target the actual main content */
-      [data-element-id="main-content-area"],
-      div[class*="jsx-"][class*="flex-1"],
-      div[class*="jsx-"][class*="pl-"],
-      main,
-      div[class*="jsx-"][class*="overflow-y-auto"] {
-        background-color: ${CONFIG.colors.background} !important;
-        color: ${CONFIG.colors.text} !important;
-        font-family: ${CONFIG.fonts.primary} !important;
-      }
-
-      /* Message containers */
-      div[class*="jsx-"] div[class*="message"],
-      div[class*="jsx-"] div[class*="chat"],
-      div[class*="jsx-"] div[class*="flex"][class*="gap-"] {
-        background-color: transparent !important;
-        border: none !important;
-        margin: ${CONFIG.spacing.margin} 0 !important;
-        padding: ${CONFIG.spacing.padding} !important;
-      }
-
-      /* User messages - light blue background */
-      div[class*="jsx-"] div[class*="user"],
-      div[class*="jsx-"] div[class*="human"],
-      div[data-message-author="user"],
-      div[class*="jsx-"] div:has([data-message-author="user"]) {
-        background-color: ${CONFIG.colors.userMessage} !important;
-        color: ${CONFIG.colors.text} !important;
-        border-radius: ${CONFIG.spacing.borderRadius} !important;
-        padding: ${CONFIG.spacing.padding} !important;
-        border: 1px solid ${CONFIG.colors.border} !important;
-      }
-
-      /* Assistant messages - white background */
-      div[class*="jsx-"] div[class*="assistant"],
-      div[class*="jsx-"] div[class*="ai"],
-      div[data-message-author="assistant"],
-      div[class*="jsx-"] div:has([data-message-author="assistant"]) {
-        background-color: ${CONFIG.colors.assistantMessage} !important;
-        color: ${CONFIG.colors.text} !important;
-        border-radius: ${CONFIG.spacing.borderRadius} !important;
-        padding: ${CONFIG.spacing.padding} !important;
-        border: 1px solid ${CONFIG.colors.border} !important;
-      }
-
-      /* Message text */
-      div[class*="jsx-"] p,
-      div[class*="jsx-"] span,
-      div[class*="jsx-"] div[class*="text-"] {
-        color: ${CONFIG.colors.text} !important;
-        line-height: 1.6 !important;
-      }
-    `;
-    injectCSS(mainContentCSS);
-  }
-
-  function applyCodeBlockStyles() {
-    const codeBlockCSS = `
-      /* Code blocks */
-      pre {
-        background-color: ${CONFIG.colors.codeBackground} !important;
-        border: 1px solid ${CONFIG.colors.codeBorder} !important;
-        border-radius: ${CONFIG.spacing.borderRadius} !important;
-        padding: ${CONFIG.spacing.padding} !important;
-        overflow-x: auto !important;
-        font-family: ${CONFIG.fonts.mono} !important;
-      }
-
-      pre code {
-        background-color: transparent !important;
-        color: ${CONFIG.colors.text} !important;
-        font-family: ${CONFIG.fonts.mono} !important;
-        padding: 0 !important;
-      }
-
-      /* Inline code */
-      code {
-        background-color: ${CONFIG.colors.codeBackground} !important;
-        color: ${CONFIG.colors.text} !important;
-        padding: 2px 4px !important;
-        border-radius: 4px !important;
-        font-family: ${CONFIG.fonts.mono} !important;
-        border: 1px solid ${CONFIG.colors.codeBorder} !important;
-      }
-
-      /* Syntax highlighting for light theme */
-      .hljs {
-        background-color: ${CONFIG.colors.codeBackground} !important;
-        color: ${CONFIG.colors.text} !important;
-      }
-    `;
-    injectCSS(codeBlockCSS);
-  }
-
-  function applyInputAreaStyles() {
-    const inputAreaCSS = `
-      /* Input areas */
-      textarea, input[type="text"] {
-        background-color: ${CONFIG.colors.surface} !important;
-        border: 1px solid ${CONFIG.colors.border} !important;
-        border-radius: ${CONFIG.spacing.borderRadius} !important;
-        color: ${CONFIG.colors.text} !important;
-        padding: ${CONFIG.spacing.padding} !important;
-        font-family: ${CONFIG.fonts.primary} !important;
-      }
-
-      textarea:focus, input[type="text"]:focus {
-        border-color: ${CONFIG.colors.orange} !important;
-        outline: none !important;
-        box-shadow: 0 0 0 2px ${CONFIG.colors.orange}20 !important;
-      }
-
-      /* Send button */
-      button[class*="send"], button[type="submit"] {
-        background-color: ${CONFIG.colors.orange} !important;
-        color: white !important;
-        border: none !important;
-        border-radius: ${CONFIG.spacing.borderRadius} !important;
-        padding: 8px 16px !important;
-        transition: all 0.2s ease !important;
-        font-weight: 500 !important;
-      }
-
-      button[class*="send"]:hover, button[type="submit"]:hover {
-        background-color: #B45309 !important;
-      }
-
-      button[class*="send"]:disabled, button[type="submit"]:disabled {
-        background-color: ${CONFIG.colors.textSecondary} !important;
-        cursor: not-allowed !important;
-      }
-    `;
-    injectCSS(inputAreaCSS);
-  }
-
-  function applyGlobalStyles() {
-    const globalCSS = `
-      /* CRITICAL: Override CSS variables that control dark mode */
-      :root {
-        --main-dark-color: ${CONFIG.colors.background} !important;
-        --sidebar-color: ${CONFIG.colors.sidebar} !important;
-        --sidebar-menu-color: ${CONFIG.colors.sidebar} !important;
-        --workspace-color: ${CONFIG.colors.sidebar} !important;
-        --popup-color: ${CONFIG.colors.sidebar} !important;
-        --text-color: ${CONFIG.colors.text} !important;
-        --border-color: ${CONFIG.colors.border} !important;
-      }
-
-      /* Force light mode on body */
-      body {
-        background-color: ${CONFIG.colors.background} !important;
-        color: ${CONFIG.colors.text} !important;
-        font-family: ${CONFIG.fonts.primary} !important;
-      }
-
-      /* Override dark mode classes */
-      .dark {
-        background-color: ${CONFIG.colors.background} !important;
-        color: ${CONFIG.colors.text} !important;
-      }
-
-      /* Target the specific jsx class from inspector */
-      .jsx-7078ffb922cb3c38 {
-        background-color: ${CONFIG.colors.sidebar} !important;
-      }
-
-      /* Force background on elements using CSS variables */
-      div[class*="bg-[color:--sidebar-color]"],
-      div[class*="bg-[--workspace-color]"],
-      nav[class*="bg-[color:--sidebar-color]"] {
-        background-color: ${CONFIG.colors.sidebar} !important;
-      }
-
-      /* Chat space background */
-      div[class*="dark:bg-[--main-dark-color]"],
-      div[data-element-id="chat-space-background"] {
-        background-color: ${CONFIG.colors.background} !important;
-      }
-
-      /* Main content area */
-      div[data-element-id="main-content-area"] {
-        background-color: ${CONFIG.colors.background} !important;
-      }
-
-      /* Sidebar specific */
-      nav[data-element-id="side-bar-background"] {
-        background-color: ${CONFIG.colors.sidebar} !important;
-      }
-
-      /* Scrollbar styling */
-      * {
-        scrollbar-width: thin !important;
-        scrollbar-color: ${CONFIG.colors.border} transparent !important;
-      }
-
-      *::-webkit-scrollbar {
-        width: 8px !important;
-        height: 8px !important;
-      }
-
-      *::-webkit-scrollbar-track {
-        background: transparent !important;
-      }
-
-      *::-webkit-scrollbar-thumb {
-        background-color: ${CONFIG.colors.border} !important;
-        border-radius: 4px !important;
-      }
-
-      *::-webkit-scrollbar-thumb:hover {
-        background-color: ${CONFIG.colors.textSecondary} !important;
-      }
-
-      /* Typography */
-      h1, h2, h3, h4, h5, h6 {
-        color: ${CONFIG.colors.text} !important;
-      }
-
-      /* Links */
-      a {
-        color: ${CONFIG.colors.orange} !important;
-      }
-
-      a:hover {
-        color: #B45309 !important;
-      }
-
-      /* Form elements */
-      button {
-        font-family: ${CONFIG.fonts.primary} !important;
-      }
-
-      input, textarea {
-        font-family: ${CONFIG.fonts.primary} !important;
-      }
-
-      /* Highlight */
-      .highlight {
-        background-color: ${CONFIG.colors.lightOrange} !important;
-        padding: 2px 4px !important;
-        border-radius: 4px !important;
-      }
-    `;
-    injectCSS(globalCSS);
-  }
-
-  function styleElements() {
-    // Force light mode by removing dark class
-    document.documentElement.classList.remove('dark');
-    document.body.classList.remove('dark');
-    
-    // Also remove dark class from any jsx elements
-    const allElements = document.querySelectorAll('*');
-    allElements.forEach(element => {
-      if (element.classList.contains('dark')) {
-        element.classList.remove('dark');
-      }
-    });
-    
-    // Apply all styles
-    applyGlobalStyles();
-    applySidebarStyles();
-    applyMainContentStyles();
-    applyCodeBlockStyles();
-    applyInputAreaStyles();
-  }
-
-  function observeChanges() {
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'childList') {
-          mutation.addedNodes.forEach((node) => {
-            if (node.nodeType === Node.ELEMENT_NODE) {
-              styleElements();
+    function safe(fn) {
+        return function(...args) {
+            try {
+                return fn.apply(this, args);
+            } catch (error) {
+                console.error('Claude Theme Error:', error);
+                return null;
             }
-          });
+        };
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function injectStyles(styles) {
+        const styleSheet = document.createElement('style');
+        styleSheet.type = 'text/css';
+        styleSheet.id = 'claude-ai-theme-styles';
+        styleSheet.textContent = styles;
+        
+        // Remove existing theme styles
+        const existingStyles = document.getElementById('claude-ai-theme-styles');
+        if (existingStyles) {
+            existingStyles.remove();
         }
-      });
-    });
+        
+        document.head.appendChild(styleSheet);
+    }
 
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
-  }
+    // Main theme styles
+    function generateThemeStyles() {
+        return `
+            /* Claude AI Theme - Root Variables */
+            :root {
+                --claude-primary: ${CONFIG.colors.primary};
+                --claude-primary-hover: ${CONFIG.colors.primaryHover};
+                --claude-primary-light: ${CONFIG.colors.primaryLight};
+                --claude-main-bg: ${CONFIG.colors.mainBg};
+                --claude-sidebar-bg: ${CONFIG.colors.sidebarBg};
+                --claude-workspace-bg: ${CONFIG.colors.workspaceBg};
+                --claude-card-bg: ${CONFIG.colors.cardBg};
+                --claude-text-primary: ${CONFIG.colors.textPrimary};
+                --claude-text-secondary: ${CONFIG.colors.textSecondary};
+                --claude-text-muted: ${CONFIG.colors.textMuted};
+                --claude-border: ${CONFIG.colors.border};
+                --claude-border-hover: ${CONFIG.colors.borderHover};
+                --claude-shadow-sm: ${CONFIG.shadows.sm};
+                --claude-shadow-md: ${CONFIG.shadows.md};
+                --claude-shadow-lg: ${CONFIG.shadows.lg};
+                --claude-radius-sm: ${CONFIG.borderRadius.sm};
+                --claude-radius-md: ${CONFIG.borderRadius.md};
+                --claude-radius-lg: ${CONFIG.borderRadius.lg};
+                --claude-radius-xl: ${CONFIG.borderRadius.xl};
+                --claude-font-family: ${CONFIG.typography.fontFamily};
+            }
 
-  function initTheme() {
-    console.log('Initializing Claude Light Theme...');
-    
-    // Override CSS variables immediately
-    const root = document.documentElement;
-    root.style.setProperty('--main-dark-color', CONFIG.colors.background);
-    root.style.setProperty('--sidebar-color', CONFIG.colors.sidebar);
-    root.style.setProperty('--sidebar-menu-color', CONFIG.colors.sidebar);
-    root.style.setProperty('--workspace-color', CONFIG.colors.sidebar);
-    root.style.setProperty('--popup-color', CONFIG.colors.sidebar);
-    
-    styleElements();
-    observeChanges();
-    
-    // Force light mode periodically and aggressively
-    setInterval(() => {
-      document.documentElement.classList.remove('dark');
-      document.body.classList.remove('dark');
-      
-      // Force CSS variables again
-      root.style.setProperty('--main-dark-color', CONFIG.colors.background);
-      root.style.setProperty('--sidebar-color', CONFIG.colors.sidebar);
-      root.style.setProperty('--sidebar-menu-color', CONFIG.colors.sidebar);
-      root.style.setProperty('--workspace-color', CONFIG.colors.sidebar);
-      
-      // Force background colors on key elements
-      const sidebar = document.querySelector('[data-element-id="nav-container"]');
-      if (sidebar) {
-        sidebar.style.backgroundColor = CONFIG.colors.sidebar;
-      }
-      
-      const sidebarBg = document.querySelector('[data-element-id="side-bar-background"]');
-      if (sidebarBg) {
-        sidebarBg.style.backgroundColor = CONFIG.colors.sidebar;
-      }
-      
-      const mainContent = document.querySelector('[data-element-id="main-content-area"]');
-      if (mainContent) {
-        mainContent.style.backgroundColor = CONFIG.colors.background;
-      }
-      
-      const chatSpace = document.querySelector('[data-element-id="chat-space-background"]');
-      if (chatSpace) {
-        chatSpace.style.backgroundColor = CONFIG.colors.background;
-      }
-      
-      // Force jsx elements
-      const jsxElements = document.querySelectorAll('.jsx-7078ffb922cb3c38');
-      jsxElements.forEach(element => {
-        element.style.backgroundColor = CONFIG.colors.sidebar;
-      });
-    }, 500);
-    
-    console.log('Claude Light Theme initialized successfully!');
-  }
+            /* Override dark mode for light theme */
+            body.dark {
+                --main-dark-color: var(--claude-main-bg) !important;
+                --sidebar-color: var(--claude-sidebar-bg) !important;
+                --sidebar-menu-color: var(--claude-workspace-bg) !important;
+                --workspace-color: var(--claude-workspace-bg) !important;
+                --popup-color: var(--claude-card-bg) !important;
+                --main-dark-popup-color: var(--claude-card-bg) !important;
+            }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initTheme);
-  } else {
-    initTheme();
-  }
+            /* Main body styling */
+            body {
+                background-color: var(--claude-main-bg) !important;
+                color: var(--claude-text-primary) !important;
+                font-family: var(--claude-font-family) !important;
+                --sidebar-color: var(--claude-sidebar-bg) !important;
+                --sidebar-menu-color: var(--claude-workspace-bg) !important;
+                --workspace-color: var(--claude-workspace-bg) !important;
+                --popup-color: var(--claude-card-bg) !important;
+                --main-dark-color: var(--claude-main-bg) !important;
+                --main-dark-popup-color: var(--claude-card-bg) !important;
+            }
 
-  setTimeout(initTheme, 1000);
+            /* Sidebar styling */
+            ${SELECTORS.sidebarBackground} {
+                background-color: var(--claude-sidebar-bg) !important;
+                border-right: 1px solid var(--claude-border) !important;
+            }
+
+            ${SELECTORS.sidebarBeginning} {
+                background-color: var(--claude-workspace-bg) !important;
+                border-radius: var(--claude-radius-lg) !important;
+                margin: ${CONFIG.spacing.sm} !important;
+            }
+
+            ${SELECTORS.workspaceBar} {
+                background-color: var(--claude-workspace-bg) !important;
+            }
+
+            /* New Chat Button */
+            ${SELECTORS.newChatButton} {
+                background-color: var(--claude-primary) !important;
+                color: white !important;
+                border: none !important;
+                border-radius: var(--claude-radius-lg) !important;
+                font-weight: ${CONFIG.typography.fontWeight.medium} !important;
+                box-shadow: var(--claude-shadow-sm) !important;
+                transition: all 0.2s ease !important;
+            }
+
+            ${SELECTORS.newChatButton}:hover {
+                background-color: var(--claude-primary-hover) !important;
+                box-shadow: var(--claude-shadow-md) !important;
+                transform: translateY(-1px) !important;
+            }
+
+            ${SELECTORS.newChatButton}:active {
+                transform: translateY(0) !important;
+                box-shadow: var(--claude-shadow-sm) !important;
+            }
+
+            /* Workspace Tab Styling */
+            ${SELECTORS.workspaceTabChat} span,
+            ${SELECTORS.workspaceTabAgents} span,
+            ${SELECTORS.workspaceTabPrompts} span,
+            ${SELECTORS.workspaceTabPlugins} span,
+            ${SELECTORS.workspaceTabModels} span,
+            ${SELECTORS.workspaceTabTeams} span,
+            ${SELECTORS.workspaceTabSettings} span {
+                color: var(--claude-text-secondary) !important;
+                border-radius: var(--claude-radius-md) !important;
+                transition: all 0.2s ease !important;
+            }
+
+            ${SELECTORS.workspaceTabChat} span:hover,
+            ${SELECTORS.workspaceTabAgents} span:hover,
+            ${SELECTORS.workspaceTabPrompts} span:hover,
+            ${SELECTORS.workspaceTabPlugins} span:hover,
+            ${SELECTORS.workspaceTabModels} span:hover,
+            ${SELECTORS.workspaceTabTeams} span:hover,
+            ${SELECTORS.workspaceTabSettings} span:hover {
+                background-color: var(--claude-primary-light) !important;
+                color: var(--claude-text-primary) !important;
+            }
+
+            /* Active workspace tab */
+            ${SELECTORS.workspaceTabChat} span.bg-white\\/20,
+            ${SELECTORS.workspaceTabChat} span.text-white {
+                background-color: var(--claude-primary) !important;
+                color: white !important;
+            }
+
+            /* User Profile Button */
+            ${SELECTORS.userProfileButton} {
+                border-radius: var(--claude-radius-lg) !important;
+                transition: all 0.2s ease !important;
+            }
+
+            ${SELECTORS.userProfileButton}:hover {
+                background-color: var(--claude-primary-light) !important;
+            }
+
+            ${SELECTORS.userProfileImage} {
+                border-radius: var(--claude-radius-md) !important;
+                border: 2px solid var(--claude-border) !important;
+            }
+
+            /* Chat Container */
+            ${SELECTORS.chatContainer} {
+                background-color: var(--claude-main-bg) !important;
+                color: var(--claude-text-primary) !important;
+            }
+
+            /* Message Containers */
+            ${SELECTORS.messageUser} {
+                background-color: var(--claude-primary-light) !important;
+                border-radius: var(--claude-radius-lg) !important;
+                border: 1px solid var(--claude-border) !important;
+                padding: ${CONFIG.spacing.md} !important;
+                margin: ${CONFIG.spacing.sm} 0 !important;
+            }
+
+            ${SELECTORS.messageAssistant} {
+                background-color: var(--claude-card-bg) !important;
+                border-radius: var(--claude-radius-lg) !important;
+                border: 1px solid var(--claude-border) !important;
+                padding: ${CONFIG.spacing.md} !important;
+                margin: ${CONFIG.spacing.sm} 0 !important;
+                box-shadow: var(--claude-shadow-sm) !important;
+            }
+
+            /* Input Area */
+            ${SELECTORS.inputContainer} {
+                background-color: var(--claude-card-bg) !important;
+                border-radius: var(--claude-radius-lg) !important;
+                border: 1px solid var(--claude-border) !important;
+                box-shadow: var(--claude-shadow-sm) !important;
+            }
+
+            ${SELECTORS.inputTextarea} {
+                background-color: transparent !important;
+                border: none !important;
+                color: var(--claude-text-primary) !important;
+                font-family: var(--claude-font-family) !important;
+                border-radius: var(--claude-radius-md) !important;
+            }
+
+            ${SELECTORS.inputTextarea}:focus {
+                outline: none !important;
+                box-shadow: 0 0 0 2px var(--claude-primary-light) !important;
+            }
+
+            ${SELECTORS.sendButton} {
+                background-color: var(--claude-primary) !important;
+                color: white !important;
+                border: none !important;
+                border-radius: var(--claude-radius-md) !important;
+                transition: all 0.2s ease !important;
+            }
+
+            ${SELECTORS.sendButton}:hover {
+                background-color: var(--claude-primary-hover) !important;
+                box-shadow: var(--claude-shadow-md) !important;
+            }
+
+            /* Generic button styling */
+            button:not([class*="workspace-tab"]):not([data-element-id*="workspace-tab"]) {
+                border-radius: var(--claude-radius-md) !important;
+                transition: all 0.2s ease !important;
+                font-family: var(--claude-font-family) !important;
+            }
+
+            button:not([class*="workspace-tab"]):not([data-element-id*="workspace-tab"]):hover {
+                transform: translateY(-1px) !important;
+                box-shadow: var(--claude-shadow-sm) !important;
+            }
+
+            /* Form elements */
+            input, textarea, select {
+                background-color: var(--claude-card-bg) !important;
+                border: 1px solid var(--claude-border) !important;
+                border-radius: var(--claude-radius-md) !important;
+                color: var(--claude-text-primary) !important;
+                font-family: var(--claude-font-family) !important;
+                transition: all 0.2s ease !important;
+            }
+
+            input:focus, textarea:focus, select:focus {
+                outline: none !important;
+                border-color: var(--claude-primary) !important;
+                box-shadow: 0 0 0 2px var(--claude-primary-light) !important;
+            }
+
+            /* Code blocks */
+            code {
+                background-color: var(--claude-sidebar-bg) !important;
+                border: 1px solid var(--claude-border) !important;
+                border-radius: var(--claude-radius-sm) !important;
+                padding: ${CONFIG.spacing.xs} ${CONFIG.spacing.sm} !important;
+                font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
+                color: var(--claude-text-primary) !important;
+            }
+
+            pre {
+                background-color: var(--claude-sidebar-bg) !important;
+                border: 1px solid var(--claude-border) !important;
+                border-radius: var(--claude-radius-md) !important;
+                padding: ${CONFIG.spacing.md} !important;
+                overflow-x: auto !important;
+                font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace !important;
+            }
+
+            /* Modals and dropdowns */
+            .modal, .dropdown, .tooltip {
+                background-color: var(--claude-card-bg) !important;
+                border: 1px solid var(--claude-border) !important;
+                border-radius: var(--claude-radius-lg) !important;
+                box-shadow: var(--claude-shadow-lg) !important;
+                color: var(--claude-text-primary) !important;
+            }
+
+            /* Scrollbar styling */
+            ::-webkit-scrollbar {
+                width: 8px !important;
+                height: 8px !important;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: var(--claude-sidebar-bg) !important;
+                border-radius: var(--claude-radius-sm) !important;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: var(--claude-border) !important;
+                border-radius: var(--claude-radius-sm) !important;
+            }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: var(--claude-border-hover) !important;
+            }
+
+            /* Typography improvements */
+            h1, h2, h3, h4, h5, h6 {
+                color: var(--claude-text-primary) !important;
+                font-family: var(--claude-font-family) !important;
+                font-weight: ${CONFIG.typography.fontWeight.semibold} !important;
+            }
+
+            p {
+                color: var(--claude-text-primary) !important;
+                font-family: var(--claude-font-family) !important;
+                line-height: 1.6 !important;
+            }
+
+            /* Links */
+            a {
+                color: var(--claude-primary) !important;
+                text-decoration: none !important;
+                transition: all 0.2s ease !important;
+            }
+
+            a:hover {
+                color: var(--claude-primary-hover) !important;
+                text-decoration: underline !important;
+            }
+
+            /* Cards and containers */
+            .card, [class*="card"] {
+                background-color: var(--claude-card-bg) !important;
+                border: 1px solid var(--claude-border) !important;
+                border-radius: var(--claude-radius-lg) !important;
+                box-shadow: var(--claude-shadow-sm) !important;
+                transition: all 0.2s ease !important;
+            }
+
+            .card:hover, [class*="card"]:hover {
+                box-shadow: var(--claude-shadow-md) !important;
+                transform: translateY(-1px) !important;
+            }
+
+            /* Fix for dark mode classes */
+            .dark .bg-gray-800 {
+                background-color: var(--claude-sidebar-bg) !important;
+            }
+
+            .dark .text-white {
+                color: var(--claude-text-primary) !important;
+            }
+
+            .dark .bg-white {
+                background-color: var(--claude-card-bg) !important;
+            }
+
+            /* Animation improvements */
+            * {
+                transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease !important;
+            }
+
+            /* Focus improvements for accessibility */
+            button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+                outline: 2px solid var(--claude-primary) !important;
+                outline-offset: 2px !important;
+            }
+        `;
+    }
+
+    // Initialize theme
+    function initTheme() {
+        console.log('🎨 Initializing Claude AI Theme...');
+        
+        // Inject main styles
+        injectStyles(generateThemeStyles());
+        
+        // Set up mutation observer for dynamic content
+        const observer = new MutationObserver(debounce(safe(() => {
+            // Re-apply styles to new elements if needed
+            applyDynamicStyles();
+        }), 100));
+        
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['class', 'data-element-id']
+        });
+        
+        // Apply initial dynamic styles
+        applyDynamicStyles();
+        
+        console.log('✅ Claude AI Theme initialized successfully!');
+    }
+
+    // Apply dynamic styles to elements that might be added later
+    function applyDynamicStyles() {
+        // Force light mode by removing dark class
+        document.body.classList.remove('dark');
+        
+        // Apply custom styles to specific elements that might need special handling
+        const elements = document.querySelectorAll('[class*="bg-gray-800"], [class*="text-white"]');
+        elements.forEach(element => {
+            if (element.classList.contains('bg-gray-800')) {
+                element.style.backgroundColor = 'var(--claude-sidebar-bg)';
+            }
+            if (element.classList.contains('text-white')) {
+                element.style.color = 'var(--claude-text-primary)';
+            }
+        });
+    }
+
+    // Debounced resize handler
+    const handleResize = debounce(safe(() => {
+        // Handle any resize-specific styling if needed
+        applyDynamicStyles();
+    }), 250);
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTheme);
+    } else {
+        initTheme();
+    }
+
+    // Handle window resize
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup function (for development)
+    window.cleanupClaudeTheme = function() {
+        const styleSheet = document.getElementById('claude-ai-theme-styles');
+        if (styleSheet) {
+            styleSheet.remove();
+        }
+        window.removeEventListener('resize', handleResize);
+        console.log('🧹 Claude AI Theme cleaned up');
+    };
+
+    // Export for debugging
+    window.claudeTheme = {
+        CONFIG,
+        SELECTORS,
+        initTheme,
+        applyDynamicStyles,
+        generateThemeStyles,
+    };
+
 })();
