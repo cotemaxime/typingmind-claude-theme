@@ -1,6 +1,13 @@
 # claude-theme
 Typingmind Claude-like Theme
 
+## Usage
+- Go to TypingMind -> Settings -> Extensions then add the public pages URL:
+```
+https://cotemaxime.github.io/typingmind-claude-theme/claude-theme.js
+```
+- Refresh the app and it should apply
+
 ## Screenshot
 ### Light
 ![Preview Light](SCR-20250711-nric.png)
