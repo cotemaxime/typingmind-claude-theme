@@ -1256,8 +1256,32 @@
                 background-color: var(--claude-primary) !important;
                 color: white !important;
                 border-color: var(--claude-primary) !important;
-                border-top-right-radius: 0 !important;
-                border-bottom-right-radius: 0 !important;
+                border-radius: var(--claude-radius-md) !important;
+            }
+
+            /* Fix regenerate button truncation */
+            button[data-element-id="send-button"].truncate {
+                overflow: visible !important;
+                text-overflow: unset !important;
+                white-space: nowrap !important;
+                min-width: max-content !important;
+                width: auto !important;
+                max-width: none !important;
+            }
+
+            /* Fix parent container that's cutting off the regenerate button */
+            div.inline-flex:has(button[data-element-id="send-button"]) {
+                overflow: visible !important;
+                min-width: max-content !important;
+                width: auto !important;
+                flex-shrink: 0 !important;
+            }
+
+            /* Fix the main container that holds all the buttons */
+            div.flex.items-center.justify-end.gap-1:has(button[data-element-id="send-button"]) {
+                overflow: visible !important;
+                min-width: max-content !important;
+                flex-wrap: nowrap !important;
             }
             
             [data-element-id="send-button"]:hover {
