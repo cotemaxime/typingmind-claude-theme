@@ -1256,7 +1256,28 @@
                 background-color: var(--claude-primary) !important;
                 color: white !important;
                 border-color: var(--claude-primary) !important;
+            }
+
+            /* Button group styling for send button */
+            [data-element-id="send-button"].rounded-r-none {
+                border-top-right-radius: 0 !important;
+                border-bottom-right-radius: 0 !important;
+                border-top-left-radius: var(--claude-radius-md) !important;
+                border-bottom-left-radius: var(--claude-radius-md) !important;
+            }
+
+            /* Standalone send button (regenerate) */
+            [data-element-id="send-button"]:not(.rounded-r-none) {
                 border-radius: var(--claude-radius-md) !important;
+            }
+
+            /* Button group container fix */
+            div.inline-flex.rounded-md.items-stretch:has([data-element-id="send-button"][class*="rounded-r-none"]) {
+                gap: 0 !important;
+            }
+
+            div.inline-flex.rounded-md.items-stretch:has([data-element-id="send-button"][class*="rounded-r-none"]) > div {
+                margin-left: 0 !important;
             }
 
             /* Fix regenerate button truncation */
