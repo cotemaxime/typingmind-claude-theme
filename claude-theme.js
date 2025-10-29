@@ -1407,6 +1407,372 @@
                 outline: 2px solid var(--claude-primary) !important;
                 outline-offset: 2px !important;
             }
+
+            /* Shield Plugin Modal Styling */
+            .shield-checker-modal {
+                background-color: var(--claude-card-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border: 1px solid var(--claude-border) !important;
+                border-radius: var(--claude-radius-lg) !important;
+                box-shadow: var(--claude-shadow-lg) !important;
+            }
+
+            .shield-checker-modal .modal-header {
+                background-color: transparent !important;
+                border-bottom: 1px solid var(--claude-border) !important;
+                color: var(--claude-text-primary) !important;
+            }
+
+            .shield-checker-modal .modal-title {
+                color: var(--claude-text-primary) !important;
+            }
+
+            .shield-checker-modal .modal-section {
+                background-color: transparent !important;
+            }
+
+            .shield-checker-modal .modal-section-title {
+                color: var(--claude-text-primary) !important;
+            }
+
+            .shield-checker-modal .rule-item {
+                background-color: var(--claude-sidebar-bg) !important;
+                border: 1px solid var(--claude-border) !important;
+                border-radius: var(--claude-radius-md) !important;
+                color: var(--claude-text-primary) !important;
+            }
+
+            .shield-checker-modal .rule-name {
+                color: var(--claude-text-primary) !important;
+            }
+
+            .shield-checker-modal .rule-details {
+                color: var(--claude-text-secondary) !important;
+            }
+
+            .shield-checker-modal .rule-details code {
+                background-color: var(--claude-workspace-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border: 1px solid var(--claude-border) !important;
+            }
+
+            .shield-checker-modal .text-gray-400 {
+                color: var(--claude-text-muted) !important;
+            }
+
+            .shield-checker-modal .button {
+                border-radius: var(--claude-radius-md) !important;
+                font-weight: var(--claude-font-weight-medium) !important;
+                transition: all 0.2s ease !important;
+            }
+
+            .shield-checker-modal .button-primary {
+                background-color: var(--claude-primary) !important;
+                color: white !important;
+                border: 1px solid var(--claude-primary) !important;
+            }
+
+            .shield-checker-modal .button-primary:hover {
+                background-color: var(--claude-primary-hover) !important;
+                border-color: var(--claude-primary-hover) !important;
+            }
+
+            .shield-checker-modal .button-danger {
+                background-color: ${CONFIG.colors.error} !important;
+                color: white !important;
+                border: 1px solid ${CONFIG.colors.error} !important;
+            }
+
+            .shield-checker-modal .button-danger:hover {
+                background-color: #dc2626 !important;
+                border-color: #dc2626 !important;
+            }
+
+            .shield-checker-modal .icon-button {
+                background-color: transparent !important;
+                color: var(--claude-text-secondary) !important;
+                border: 1px solid var(--claude-border) !important;
+                border-radius: var(--claude-radius-sm) !important;
+            }
+
+            .shield-checker-modal .icon-button:hover {
+                background-color: var(--claude-primary-light) !important;
+                color: var(--claude-text-primary) !important;
+                border-color: var(--claude-border-hover) !important;
+            }
+
+            .shield-checker-modal .icon-button.edit:hover {
+                background-color: var(--claude-primary-light) !important;
+                color: var(--claude-primary) !important;
+            }
+
+            .shield-checker-modal .icon-button.delete:hover {
+                background-color: rgba(239, 68, 68, 0.1) !important;
+                color: ${CONFIG.colors.error} !important;
+                border-color: ${CONFIG.colors.error} !important;
+            }
+
+            .shield-checker-modal input[type="checkbox"] {
+                background-color: var(--claude-card-bg) !important;
+                border: 1px solid var(--claude-border) !important;
+                border-radius: var(--claude-radius-sm) !important;
+            }
+
+            .shield-checker-modal input[type="checkbox"]:checked {
+                background-color: var(--claude-primary) !important;
+                border-color: var(--claude-primary) !important;
+            }
+
+            .shield-checker-modal input[type="text"],
+            .shield-checker-modal input[type="color"],
+            .shield-checker-modal select {
+                background-color: var(--claude-card-bg) !important;
+                border: 1px solid var(--claude-border) !important;
+                border-radius: var(--claude-radius-md) !important;
+                color: var(--claude-text-primary) !important;
+            }
+
+            .shield-checker-modal input[type="text"]:focus,
+            .shield-checker-modal select:focus {
+                outline: none !important;
+                border-color: var(--claude-primary) !important;
+                box-shadow: 0 0 0 2px var(--claude-primary-light) !important;
+            }
+
+            .shield-checker-modal .toggle-checkbox {
+                background-color: var(--claude-card-bg) !important;
+                border: 4px solid var(--claude-border) !important;
+            }
+
+            .shield-checker-modal .toggle-checkbox:checked {
+                background-color: var(--claude-primary) !important;
+                border-color: var(--claude-primary) !important;
+            }
+
+            .shield-checker-modal .toggle-label {
+                background-color: var(--claude-text-muted) !important;
+            }
+
+            .shield-checker-modal .toggle-checkbox:checked + .toggle-label {
+                background-color: var(--claude-primary) !important;
+            }
+
+            .shield-checker-modal .form-group label {
+                color: var(--claude-text-primary) !important;
+            }
+
+            .shield-checker-modal .button-group {
+                border-top: 1px solid var(--claude-border) !important;
+                background-color: transparent !important;
+            }
+
+            /* Prompt Library Modal Styling */
+            [data-element-id="pop-up-modal"] {
+                background-color: var(--claude-card-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border: 1px solid var(--claude-border) !important;
+            }
+
+            /* Modal title styling */
+            [data-element-id="prompt-library-modal-title"] {
+                color: var(--claude-text-primary) !important;
+            }
+
+            /* Modal description styling */
+            [data-element-id="prompt-library-modal-description"] {
+                color: var(--claude-text-secondary) !important;
+            }
+
+            /* Tab styling */
+            [data-element-id="prompt-library-tabs"] {
+                color: var(--claude-text-secondary) !important;
+                border-color: var(--claude-border) !important;
+            }
+
+            [data-element-id="prompt-library-tabs"].selected {
+                color: var(--claude-primary) !important;
+                border-color: var(--claude-primary) !important;
+            }
+
+            [data-element-id="prompt-library-tabs"]:hover {
+                color: var(--claude-text-primary) !important;
+                border-color: var(--claude-border-hover) !important;
+            }
+
+            /* Tab badge styling */
+            [data-element-id="prompt-library-num-prompts"] {
+                background-color: var(--claude-sidebar-bg) !important;
+                color: var(--claude-text-primary) !important;
+            }
+
+            [data-element-id="prompt-library-num-prompts"].selected {
+                background-color: var(--claude-primary-light) !important;
+                color: var(--claude-primary) !important;
+            }
+
+            /* Search input styling */
+            [data-element-id="search-your-prompts"] {
+                background-color: var(--claude-sidebar-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border-color: var(--claude-border) !important;
+            }
+
+            [data-element-id="search-your-prompts"]:focus {
+                border-color: var(--claude-primary) !important;
+                box-shadow: 0 0 0 2px var(--claude-primary-light) !important;
+            }
+
+            [data-element-id="search-your-prompts"]::placeholder {
+                color: var(--claude-text-muted) !important;
+            }
+
+            /* Add prompt button styling */
+            [data-element-id="add-prompt-button"] {
+                color: var(--claude-primary) !important;
+            }
+
+            [data-element-id="add-prompt-button"]:hover {
+                color: var(--claude-primary-hover) !important;
+                text-decoration: underline !important;
+            }
+
+            /* Tags input styling */
+            [data-element-id="add-new-prompt-tags-input"] input {
+                background-color: var(--claude-sidebar-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border-color: var(--claude-border) !important;
+            }
+
+            [data-element-id="add-new-prompt-tags-input"] input:focus {
+                border-color: var(--claude-primary) !important;
+                box-shadow: 0 0 0 2px var(--claude-primary-light) !important;
+            }
+
+            [data-element-id="add-new-prompt-tags-input"] input::placeholder {
+                color: var(--claude-text-muted) !important;
+            }
+
+            /* Prompt blocks styling */
+            [data-element-id="prompt-library-one-prompt-block"] {
+                background-color: var(--claude-sidebar-bg) !important;
+                border-color: var(--claude-border) !important;
+                color: var(--claude-text-primary) !important;
+            }
+
+            [data-element-id="prompt-library-one-prompt-block"]:hover {
+                background-color: var(--claude-workspace-bg) !important;
+                border-color: var(--claude-border-hover) !important;
+            }
+
+            /* Prompt block title styling */
+            [data-element-id="prompt-library-one-prompt-block"] h3 {
+                color: var(--claude-text-primary) !important;
+            }
+
+            /* Prompt block "last used" text styling */
+            [data-element-id="prompt-library-one-prompt-block"] .text-gray-500 {
+                color: var(--claude-text-muted) !important;
+            }
+
+            /* Prompt block edit/delete buttons */
+            [data-element-id="prompt-library-one-prompt-block"] .text-blue-500 {
+                color: var(--claude-primary) !important;
+            }
+
+            [data-element-id="prompt-library-one-prompt-block"] .text-blue-500:hover {
+                color: var(--claude-primary-hover) !important;
+            }
+
+            [data-element-id="prompt-library-one-prompt-block"] .text-red-500 {
+                color: #ef4444 !important;
+            }
+
+            [data-element-id="prompt-library-one-prompt-block"] .text-red-500:hover {
+                color: #dc2626 !important;
+            }
+
+            /* Use button styling */
+            [data-element-id="prompt-library-use-button"] {
+                background-color: var(--claude-primary) !important;
+                color: white !important;
+                border-color: var(--claude-primary) !important;
+            }
+
+            [data-element-id="prompt-library-use-button"]:hover {
+                background-color: var(--claude-primary-hover) !important;
+                border-color: var(--claude-primary-hover) !important;
+            }
+
+            /* Close modal button styling */
+            [data-element-id="close-modal-button"] {
+                background-color: var(--claude-text-primary) !important;
+                color: white !important;
+                border-color: var(--claude-text-primary) !important;
+            }
+
+            [data-element-id="close-modal-button"]:hover {
+                background-color: var(--claude-text-secondary) !important;
+                border-color: var(--claude-text-secondary) !important;
+            }
+
+            /* Dark mode specific overrides for prompt library modal */
+            .dark [data-element-id="pop-up-modal"] {
+                background-color: var(--claude-card-bg) !important;
+            }
+
+            .dark [data-element-id="pop-up-modal"] .dark\\:bg-zinc-950 {
+                background-color: var(--claude-card-bg) !important;
+            }
+
+            .dark [data-element-id="pop-up-modal"] .dark\\:bg-zinc-800 {
+                background-color: var(--claude-sidebar-bg) !important;
+            }
+
+            .dark [data-element-id="pop-up-modal"] .dark\\:text-white {
+                color: var(--claude-text-primary) !important;
+            }
+
+            .dark [data-element-id="pop-up-modal"] .dark\\:text-gray-200 {
+                color: var(--claude-text-secondary) !important;
+            }
+
+            .dark [data-element-id="pop-up-modal"] .dark\\:border-gray-700 {
+                border-color: var(--claude-border) !important;
+            }
+
+            .dark [data-element-id="pop-up-modal"] .dark\\:border-gray-600 {
+                border-color: var(--claude-border) !important;
+            }
+
+            .dark [data-element-id="pop-up-modal"] .dark\\:bg-white {
+                background-color: var(--claude-card-bg) !important;
+            }
+
+            .dark [data-element-id="pop-up-modal"] .dark\\:text-slate-800 {
+                color: var(--claude-text-primary) !important;
+            }
+
+            .dark [data-element-id="pop-up-modal"] .dark\\:hover\\:bg-slate-200\\/80:hover {
+                background-color: var(--claude-workspace-bg) !important;
+            }
+
+            /* Select dropdown styling for mobile tabs */
+            .dark [data-element-id="pop-up-modal"] select.dark\\:bg-zinc-800 {
+                background-color: var(--claude-sidebar-bg) !important;
+                color: var(--claude-text-primary) !important;
+                border-color: var(--claude-border) !important;
+            }
+
+            /* Override any dark:focus styles */
+            .dark [data-element-id="pop-up-modal"] *:focus {
+                outline-color: var(--claude-primary) !important;
+            }
+
+            .dark [data-element-id="pop-up-modal"] input:focus,
+            .dark [data-element-id="pop-up-modal"] select:focus {
+                border-color: var(--claude-primary) !important;
+                box-shadow: 0 0 0 2px var(--claude-primary-light) !important;
+            }
         `;
     }
 
